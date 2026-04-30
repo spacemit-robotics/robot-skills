@@ -1,0 +1,26 @@
+skills:
+  - name: spacemit-robot-shared
+    category: shared
+    primary_docs:
+      - README.md
+  - name: spacemit-robot-sdk-bootstrap
+    category: setup
+    primary_docs:
+      - README.md
+      - build/README.md
+      - target/README.md
+  - name: spacemit-build
+    category: build
+    primary_docs:
+      - build/README.md
+      - target/README.md
+  - name: spacemit-omni-agent
+    category: application
+    primary_docs:
+      - application/native/omni_agent/README.md
+      - build/README.md
+  - name: spacemit-robot-llm
+    category: components
+    primary_docs:
+      - components/model_zoo/llm/README.md
+      - components/model_zoo/llm/include/llm_service.h
