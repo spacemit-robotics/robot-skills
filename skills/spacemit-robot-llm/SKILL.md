@@ -1,6 +1,6 @@
 ---
 name: spacemit-robot-llm
-description: model_zoo/llm 的构建、运行与性能测试入口；默认先 `mm`，模型走 `~/.cache/models/llm`，压测直接用 `bench_llm.sh`。
+description: components/model_zoo/llm 的构建、模型准备、llama-server 验证、llm_chat 示例、llama-bench 性能采集与 C++ API 接入入口。
 metadata:
   requires:
     bins: ["bash", "curl"]
@@ -10,59 +10,133 @@ metadata:
     primary_docs:
       - components/model_zoo/llm/README.md
       - components/model_zoo/llm/include/llm_service.h
+      - components/model_zoo/llm/package.xml
     build_hint: single_package_first
 ---
 
-# SpacemiT model_zoo LLM
+# SpacemiT Robot LLM
 
-先 [`spacemit-robot-shared`](../spacemit-robot-shared/SKILL.md)；无 SDK 则 [`spacemit-robot-sdk-bootstrap`](../spacemit-robot-sdk-bootstrap/SKILL.md)。
+先按 [`spacemit-robot-shared`](../spacemit-robot-shared/SKILL.md) 确认 SDK 根路径与通用构建规则；没有完整 SDK 时走 [`spacemit-robot-sdk-bootstrap`](../spacemit-robot-sdk-bootstrap/SKILL.md)。
 
 ## 何时使用
 
-- 用户要构建、运行、调试或压测 `components/model_zoo/llm`。
-- 用户要跑 `llm_chat`、接 OpenAI 兼容服务、查看 `LLMService` API，或采集 LLM 性能数据。
+- 用户要构建、运行、调试或集成 `components/model_zoo/llm`。
+- 用户要验证 GGUF 模型、启动 `llama-server`、运行 `llm_chat` 示例或采集 `llama-bench` 性能数据。
+- 用户要查看 `LLMService` C++ API、OpenAI 兼容服务接入、Tool Calling、流式输出或多轮对话能力。
 
 ## 默认规则
 
-- `build_hint`: `single_package_first`
-- 默认模型目录：`~/.cache/models/llm`
-- 不默认先读总览文档或组件 README；只有命令不清、参数不清或实际执行失败时，才回读 `README.md`、`llm_service.h` 或脚本本身。
-- 不要把模型下载到仓库内 `models/`、当前目录临时路径或其他自造目录。
+- 构建倾向：`single_package_first`，优先在模块目录执行 `mm`，只有确实需要产品配置时再按 shared 规则选择 target。
+- SDK 内模块路径：`$SPACEMIT_SDK_ROOT/components/model_zoo/llm`。
+- 默认模型目录：`~/.cache/models/llm`；不要把大模型文件放进 SDK 仓库。
+- 默认模型源：`https://archive.spacemit.com/spacemit-ai/model_zoo/llm/`。
+- 性能采集直接使用 `llama-bench`；线程数默认按 README 使用 `-t 8`，同时保留 `-p 128 -n 128 -mmp 0 -fa 1`。
+- 只有命令细节、参数语义或 API 行为不清时，再回读 `README.md`、`include/llm_service.h`、`package.xml`。
 
 ## 固定流程
 
-1. 先确认 SDK 根可用；无 SDK 就转 bootstrap。
-2. 在 `$SPACEMIT_SDK_ROOT` 下执行 `source build/envsetup.sh`。
-3. 若 `llm_chat` 不可用，再执行 `cd "$SPACEMIT_SDK_ROOT/components/model_zoo/llm" && mm`。
-4. 若 `mm` 报缺依赖，按报错补装；不要先做脱离上下文的大段依赖排查。
-5. 本地运行或压测前先检查 `~/.cache/models/llm/*.gguf`；已有模型就直接复用，没有再下载到该目录。
-6. 若 shared 规则或组件文档明确要求 target，再显式执行 `lunch <target>`；不要裸 `lunch`。
-7. 对“帮我执行 / 帮我测一下 / 跑性能数据”这类请求，必须真正执行并返回结果，而不只是给命令。
+1. 确认 `$SPACEMIT_SDK_ROOT` 指向完整 SDK，至少包含 `build/`、`components/`、`target/`。
+2. 在 SDK 根目录执行 `source build/envsetup.sh`。
+3. 需要构建时执行 `cd "$SPACEMIT_SDK_ROOT/components/model_zoo/llm" && mm`。
+4. 运行前检查 `llama-server`、`llama-cli`、`llama-bench`、`llm_chat` 是否可用；缺系统包时按 `package.xml` 和 README 补装。
+5. 运行前检查模型文件：优先复用 `~/.cache/models/llm/*.gguf` 或用户指定路径；缺模型时按下方“模型解析与下载”处理。
+6. 执行型请求必须真实运行命令，并返回模型路径、命令、关键输出、耗时或失败点。
 
-## 性能测试
+## 专项任务
 
-当用户说“测试性能数据”“跑一下 LLM 性能”时，直接按下面顺序执行：
+### 构建组件
 
-1. `source build/envsetup.sh`
-2. 若 `llm_chat` 不可用，再 `mm`
-3. `ls ~/.cache/models/llm/*.gguf`
-4. 只有在 `~/.cache/models/llm` 下没有可用 `.gguf` 时，才下载模型到该目录
-5. `cd "$SPACEMIT_SDK_ROOT/components/model_zoo/llm" && LLM_THREADS=8 scripts/bench_llm.sh ~/.cache/models/llm/<model>.gguf`
-6. 返回 first token latency、tokens/s、E2E latency、测试命令、模型路径和失败点
+```bash
+cd "$SPACEMIT_SDK_ROOT"
+source build/envsetup.sh
+cd components/model_zoo/llm
+mm
+```
+
+构建后 `llm_chat` 应通过 SDK 环境出现在 `PATH` 中；如果不可用，先检查 `output/staging/bin` 和构建日志。
+
+### 验证模型
+
+```bash
+llama-cli -m ~/.cache/models/llm/<model>.gguf \
+  -t 4 \
+  -p "Hello, please introduce yourself."
+```
+
+### 启动服务并跑示例
+
+```bash
+llama-server -m ~/.cache/models/llm/<model>.gguf -t 8 --port 8080 &
+curl -fsS http://localhost:8080/v1/models
+llm_chat "你好" "http://localhost:8080/v1" "<model-name>" "You are a helpful assistant." 256
+```
+
+端口冲突时先确认已有进程是否属于当前测试；不要默认清理用户正在使用的 `llama-server`。
+
+### 采集性能
+
+当用户说“帮我测一下 xxx 模型的性能数据”时，按“模型解析与下载”先得到本地 `.gguf` 路径，再在 SDK 根目录执行性能采集。默认命令形态如下；模型路径替换为解析出的本地路径。
+
+```bash
+llama-bench \
+  -m ~/.cache/models/llm/<model>.gguf \
+  -t 8 \
+  -p 128 \
+  -n 128 \
+  -mmp 0 \
+  -fa 1
+```
+
+返回结果时至少包含：模型路径、完整命令、线程数、prompt token 数、generation token 数、主要吞吐或延迟指标，以及失败点。
+
+### 模型解析与下载
+
+对用户点名的模型，例如“测一下 Qwen3-4B 的性能”，不要凭记忆造模型名，按下面顺序解析：
+
+1. 如果用户给的是本地 `.gguf` 路径，先确认文件存在，存在则直接使用。
+2. 在 `~/.cache/models/llm` 查找 `.gguf`，优先精确文件名匹配，其次大小写不敏感包含匹配。
+3. 本地没有匹配时，读取模型源索引，只接受其中列出的 `.gguf` 文件：
+
+   ```bash
+   curl -fsSL https://archive.spacemit.com/spacemit-ai/model_zoo/llm/ |
+     sed -n 's/.*href="\([^"]*\.gguf\)".*/\1/p'
+   ```
+
+4. 远端模型匹配规则与本地一致；如果匹配到唯一模型，下载到 `~/.cache/models/llm`：
+
+   ```bash
+   mkdir -p ~/.cache/models/llm
+   curl -fL --retry 3 --continue-at - \
+     -o ~/.cache/models/llm/<model>.gguf \
+     https://archive.spacemit.com/spacemit-ai/model_zoo/llm/<model>.gguf
+   ```
+
+5. 如果远端没有匹配模型，明确告诉用户：`当前不支持该模型`。
+6. 如果匹配到多个候选，不要自行猜测；列出候选模型名，让用户确认要测哪一个。
+
+### 接入 C++ API
+
+- 头文件入口：`components/model_zoo/llm/include/llm_service.h`。
+- 默认后端是 OpenAI 兼容 HTTP API，可连接本地 `llama-server`、vLLM、SGLang 或云端 OpenAI 兼容服务。
+- 修改 API 行为前先读 `llm_service.h` 和 `src/backends/openai_backend.*`，避免绕过已有 `LLMService` 抽象。
 
 ## 禁止事项
 
-- 不要在压测前先单独跑一次 `llm_chat` 探路；`bench_llm.sh` 自己会拉起 `llama-server` 并完成预热
-- 不要先执行与压测无关的 Python 探测或长时间搜索
-- 不要默认 `killall` / `pkill` 现有 `llama-server`；只有确认端口冲突或残留进程影响本次测试时才处理
+- 不要假设已经选择 target；需要 target 时按 shared 规则显式选择。
+- 不要把模型、日志或临时大文件提交到 SDK。
+- 不要默认 `killall`、`pkill` 或删除已有模型缓存。
+- 不要用自造脚本替代 README 中已经定义的 `llama-server`、`llama-cli`、`llama-bench` 入口。
+- 不要从非默认模型源下载用户点名的性能测试模型；默认模型源没有时回复当前不支持。
 
 ## 常见任务与命令
 
-| 意图 | 动作 |
+| 意图 | 命令 |
 | ---- | ---- |
-| 构建 | `cd "$SPACEMIT_SDK_ROOT" && source build/envsetup.sh && cd components/model_zoo/llm && mm` |
-| 查模型 | `ls ~/.cache/models/llm/*.gguf` |
-| 验模型 | `llama-cli -m ~/.cache/models/llm/<model>.gguf ...` / `llama-bench -m ~/.cache/models/llm/<model>.gguf ...` |
-| 起本地服务 | `llama-server -m <gguf> ...`（见 README） |
-| 示例对话 | `llm_chat "<text>" <api_base> <model> [prompt] [max_tokens]` |
-| 采集性能数据 | `$SPACEMIT_SDK_ROOT/components/model_zoo/llm/scripts/bench_llm.sh ~/.cache/models/llm/<model>.gguf` |
+| 构建 LLM 组件 | `cd "$SPACEMIT_SDK_ROOT" && source build/envsetup.sh && cd components/model_zoo/llm && mm` |
+| 查找模型 | `ls ~/.cache/models/llm/*.gguf` |
+| 验证模型输出 | `llama-cli -m ~/.cache/models/llm/<model>.gguf -t 4 -p "<prompt>"` |
+| 启动 OpenAI 兼容服务 | `llama-server -m ~/.cache/models/llm/<model>.gguf -t 8 --port 8080` |
+| 检查服务 | `curl -fsS http://localhost:8080/v1/models` |
+| 运行示例 | `llm_chat "<text>" "http://localhost:8080/v1" "<model-name>" "You are a helpful assistant." 256` |
+| 采集性能 | `llama-bench -m <model.gguf> -t 8 -p 128 -n 128 -mmp 0 -fa 1` |
+| 查看支持模型 | `curl -fsSL https://archive.spacemit.com/spacemit-ai/model_zoo/llm/ \| sed -n 's/.*href="\\([^"]*\\.gguf\\)".*/\\1/p'` |
