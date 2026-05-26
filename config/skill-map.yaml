@@ -24,3 +24,21 @@ skills:
     primary_docs:
       - components/model_zoo/llm/README.md
       - components/model_zoo/llm/include/llm_service.h
+  - name: spacemit-robot-grasp
+    category: components
+    primary_docs:
+      - components/control/grasp/README.md
+      - components/control/grasp/test.yaml
+      - components/control/grasp/package.xml
+  - name: spacemit-robot-manipulator
+    category: components
+    primary_docs:
+      - components/control/manipulator/README.md
+      - components/control/manipulator/test.yaml
+      - components/control/manipulator/package.xml
+  - name: spacemit-robot-lerobot-app
+    category: application
+    primary_docs:
+      - application/native/lerobot_app/README.md
+      - application/native/lerobot_app/test.yaml
+      - application/native/lerobot_app/package.xml
