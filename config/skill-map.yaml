@@ -24,12 +24,47 @@ skills:
     primary_docs:
       - components/model_zoo/llm/README.md
       - components/model_zoo/llm/include/llm_service.h
+  - name: spacemit-robot-asr
+    category: components
+    primary_docs:
+      - components/model_zoo/asr/README.md
+      - components/model_zoo/asr/test.yaml
+      - components/model_zoo/asr/package.xml
+      - components/model_zoo/asr/include/asr_service.h
+  - name: spacemit-robot-tts
+    category: components
+    primary_docs:
+      - components/model_zoo/tts/README.md
+      - components/model_zoo/tts/test.yaml
+      - components/model_zoo/tts/package.xml
+      - components/model_zoo/tts/include/tts_service.h
   - name: spacemit-robot-vad
     category: components
     primary_docs:
       - components/model_zoo/vad/README.md
       - components/model_zoo/vad/test.yaml
       - components/model_zoo/vad/package.xml
+  - name: spacemit-robot-voiceprint
+    category: components
+    primary_docs:
+      - components/model_zoo/voiceprint/README.md
+      - components/model_zoo/voiceprint/test.yaml
+      - components/model_zoo/voiceprint/package.xml
+      - components/model_zoo/voiceprint/include/vp_service.h
+  - name: spacemit-robot-audio
+    category: components
+    primary_docs:
+      - components/multimedia/audio/README.md
+      - components/multimedia/audio/test.yaml
+      - components/multimedia/audio/package.xml
+      - components/multimedia/audio/include/audio_base.hpp
+  - name: spacemit-robot-doa
+    category: components
+    primary_docs:
+      - components/multimedia/audio_process/doa/README.md
+      - components/multimedia/audio_process/doa/test.yaml
+      - components/multimedia/audio_process/doa/package.xml
+      - components/multimedia/audio_process/doa/include/doa_service.h
   - name: spacemit-robot-grasp
     category: components
     primary_docs:
