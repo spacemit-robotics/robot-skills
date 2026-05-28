@@ -42,3 +42,8 @@ skills:
       - application/native/lerobot_app/README.md
       - application/native/lerobot_app/test.yaml
       - application/native/lerobot_app/package.xml
+  - name: spacemit-robot-motor
+    category: components
+    primary_docs:
+      - components/peripherals/motor/README.md
+      - components/peripherals/motor/package.xml
