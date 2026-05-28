@@ -24,6 +24,12 @@ skills:
     primary_docs:
       - components/model_zoo/llm/README.md
       - components/model_zoo/llm/include/llm_service.h
+  - name: spacemit-robot-vad
+    category: components
+    primary_docs:
+      - components/model_zoo/vad/README.md
+      - components/model_zoo/vad/test.yaml
+      - components/model_zoo/vad/package.xml
   - name: spacemit-robot-grasp
     category: components
     primary_docs:
