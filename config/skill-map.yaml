@@ -42,3 +42,45 @@ skills:
       - application/native/lerobot_app/README.md
       - application/native/lerobot_app/test.yaml
       - application/native/lerobot_app/package.xml
+  - name: spacemit-robot-face-detection
+    category: middleware
+    primary_docs:
+      - middleware/ros2/perception/face_detection/README.md
+      - middleware/ros2/perception/face_detection/test.yaml
+      - middleware/ros2/perception/face_detection/package.xml
+  - name: spacemit-robot-human-detection
+    category: middleware
+    primary_docs:
+      - middleware/ros2/perception/human_detection/README.md
+      - middleware/ros2/perception/human_detection/test.yaml
+      - middleware/ros2/perception/human_detection/package.xml
+  - name: spacemit-robot-body-pose
+    category: middleware
+    primary_docs:
+      - middleware/ros2/perception/body_pose/README.md
+      - middleware/ros2/perception/body_pose/test.yaml
+      - middleware/ros2/perception/body_pose/package.xml
+  - name: spacemit-robot-gesture-recognition
+    category: middleware
+    primary_docs:
+      - middleware/ros2/perception/gesture_recognition/README.md
+      - middleware/ros2/perception/gesture_recognition/test.yaml
+      - middleware/ros2/perception/gesture_recognition/package.xml
+  - name: spacemit-robot-yolo-general
+    category: middleware
+    primary_docs:
+      - middleware/ros2/perception/yolo_general/README.md
+      - middleware/ros2/perception/yolo_general/test.yaml
+      - middleware/ros2/perception/yolo_general/package.xml
+  - name: spacemit-robot-object-tracking
+    category: middleware
+    primary_docs:
+      - middleware/ros2/perception/object_tracking/README.md
+      - middleware/ros2/perception/object_tracking/test.yaml
+      - middleware/ros2/perception/object_tracking/package.xml
+  - name: spacemit-robot-action-recognition
+    category: middleware
+    primary_docs:
+      - middleware/ros2/perception/action_recognition/README.md
+      - middleware/ros2/perception/action_recognition/test.yaml
+      - middleware/ros2/perception/action_recognition/package.xml
