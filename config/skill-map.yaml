@@ -83,3 +83,8 @@ skills:
       - application/native/lerobot_app/README.md
       - application/native/lerobot_app/test.yaml
       - application/native/lerobot_app/package.xml
+  - name: spacemit-robot-reachy-mini
+    category: application
+    primary_docs:
+      - application/native/reachy_mini/README.md
+      - application/native/reachy_mini/package.xml
