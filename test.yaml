@@ -1,0 +1,11 @@
+module: robot-skills
+
+tests:
+  - name: robot-skills-contract
+    description: Verifies local skill frontmatter, skill-map registration, SDK module paths, and test command entry points.
+    category: functional
+    scopes: [pr]
+    timeout_s: 120
+    workdir: sdk
+    command: |
+      python3 robot-skills/tests/test_skill_contract.py
