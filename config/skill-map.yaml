@@ -88,3 +88,8 @@ skills:
     primary_docs:
       - application/native/reachy_mini/README.md
       - application/native/reachy_mini/package.xml
+  - name: spacemit-robot-motor
+    category: components
+    primary_docs:
+      - components/peripherals/motor/README.md
+      - components/peripherals/motor/package.xml
