@@ -65,6 +65,74 @@ skills:
       - components/multimedia/audio_process/doa/test.yaml
       - components/multimedia/audio_process/doa/package.xml
       - components/multimedia/audio_process/doa/include/doa_service.h
+  - name: spacemit-robot-5g
+    category: components
+    primary_docs:
+      - components/peripherals/5g/README.md
+      - components/peripherals/5g/test.yaml
+      - middleware/ros2/peripherals/5g/README.md
+      - middleware/ros2/peripherals/5g/test.yaml
+      - middleware/ros2/peripherals/5g/package.xml
+  - name: spacemit-robot-key
+    category: components
+    primary_docs:
+      - components/peripherals/key/README.md
+      - components/peripherals/key/test.yaml
+      - components/peripherals/key/package.xml
+      - middleware/ros2/peripherals/key/README.md
+      - middleware/ros2/peripherals/key/test.yaml
+      - middleware/ros2/peripherals/key/package.xml
+  - name: spacemit-robot-led
+    category: components
+    primary_docs:
+      - components/peripherals/led/README.md
+      - components/peripherals/led/test.yaml
+      - middleware/ros2/peripherals/led/README.md
+      - middleware/ros2/peripherals/led/test.yaml
+      - middleware/ros2/peripherals/led/package.xml
+  - name: spacemit-robot-light_sensor
+    category: components
+    primary_docs:
+      - components/peripherals/light_sensor/README.md
+      - components/peripherals/light_sensor/test.yaml
+      - middleware/ros2/peripherals/light_sensor/README.md
+      - middleware/ros2/peripherals/light_sensor/test.yaml
+      - middleware/ros2/peripherals/light_sensor/package.xml
+  - name: spacemit-robot-misc_io
+    category: components
+    primary_docs:
+      - components/peripherals/misc_io/README.md
+      - components/peripherals/misc_io/test.yaml
+      - components/peripherals/misc_io/package.xml
+      - middleware/ros2/peripherals/misc_io/README.md
+      - middleware/ros2/peripherals/misc_io/test.yaml
+      - middleware/ros2/peripherals/misc_io/package.xml
+  - name: spacemit-robot-nfc
+    category: components
+    primary_docs:
+      - components/peripherals/nfc/README.md
+      - components/peripherals/nfc/test.yaml
+      - middleware/ros2/peripherals/nfc/README.md
+      - middleware/ros2/peripherals/nfc/test.yaml
+      - middleware/ros2/peripherals/nfc/package.xml
+  - name: spacemit-robot-pm
+    category: components
+    primary_docs:
+      - components/peripherals/pm/README.md
+      - components/peripherals/pm/test.yaml
+      - components/peripherals/pm/package.xml
+      - middleware/ros2/peripherals/pm/README.md
+      - middleware/ros2/peripherals/pm/test.yaml
+      - middleware/ros2/peripherals/pm/package.xml
+  - name: spacemit-robot-wifi
+    category: components
+    primary_docs:
+      - components/peripherals/wifi/README.md
+      - components/peripherals/wifi/test.yaml
+      - components/peripherals/wifi/package.xml
+      - middleware/ros2/peripherals/wifi/README.md
+      - middleware/ros2/peripherals/wifi/test.yaml
+      - middleware/ros2/peripherals/wifi/package.xml
   - name: spacemit-robot-grasp
     category: components
     primary_docs:
