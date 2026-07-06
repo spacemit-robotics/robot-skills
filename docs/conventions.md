@@ -13,6 +13,9 @@
 - 组件 skill 不写死 host、SSH 命令、board、target、用户目录。
 - 组件 skill 不默认调用 `robot-test`；它只属于 CI、回归验证或用户明确要求。
 - `primary_docs` 用于按需回源，优先 SDK 模块内 `AGENTS.md`，再读 README、package 或 test 文件。
+- 产品知识写在 `SKILL.md`：模块能力、典型场景、输入输出、支持/不支持行为，以及能力如何对应到 demo、API 和 benchmark。
+- 复杂组件可用 `references/` 拆出按需细节，但文件名按任务命名，不固定六件套，也不标准化 `product.md` 或 `overview.md`。
+- `scripts/` 是可选资源，只用于确定性、重复、容易写错或需要结构化输出的动作。
 - 运行时 helper 避免 Python 依赖；remote/build/shared 保持规则型，确需脚本时优先 Node.js。
 
 ## Build Hint

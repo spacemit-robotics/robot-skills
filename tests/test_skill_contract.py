@@ -192,6 +192,75 @@ def assert_sdk_root_variable_rules() -> None:
             fail(f"{skill_path}: SDK root variable must be SROBOTIS_ROOT only")
 
 
+def assert_module_skill_template_rules() -> None:
+    old_template = REPO_ROOT / "docs" / "reference-template.md"
+    if old_template.exists():
+        fail("docs/reference-template.md must be replaced by docs/module-skill-template.md")
+
+    template = REPO_ROOT / "docs" / "module-skill-template.md"
+    if not template.exists():
+        fail("docs/module-skill-template.md: module skill template is missing")
+    text = template.read_text(encoding="utf-8")
+    if "SDK-relative" not in text:
+        fail("docs/module-skill-template.md must require SDK-relative reference paths")
+    for token in (
+        "`SKILL.md` 是主入口",
+        "不把 `product.md`、`overview.md` 作为标准文件",
+        "References 设计",
+        "Scripts 设计",
+        "编写检查清单",
+        "`scripts/` 是可选资源",
+        "搭建环境",
+        "跑通示例",
+        "调用 API 做应用",
+        "跑性能数据",
+    ):
+        if token not in text:
+            fail(f"docs/module-skill-template.md must document: {token}")
+    forbidden_heading_tokens = (
+        "Product Knowledge Layer",
+        "User Development Loop",
+        "Recommended Layout",
+        "Standard References",
+        "Minimal Profiles",
+        "How to List References",
+        "File Template",
+        "Writing Checklist",
+        "Set up the environment",
+        "Run examples",
+        "Build an application with APIs",
+        "Produce performance data",
+    )
+    for token in forbidden_heading_tokens:
+        if token in text:
+            fail(f"docs/module-skill-template.md must use Chinese wording instead of: {token}")
+    forbidden_reference_tokens = (
+        "references/product.md",
+        "references/overview.md",
+        "references/environment.md",
+        "references/build.md",
+        "references/runtime.md",
+        "references/configuration.md",
+        "references/data-io.md",
+        "references/models.md",
+        "references/hardware.md",
+        "references/deploy-sync.md",
+        "references/testing.md",
+        "references/safety.md",
+        "references/compatibility.md",
+        "evals/",
+        "`evals/`",
+    )
+    for token in forbidden_reference_tokens:
+        if token in text:
+            fail(f"docs/module-skill-template.md: {token} must not be a standard reference dimension")
+
+    forbidden = ('cd "$SROBOTIS_ROOT"', "cd '$SROBOTIS_ROOT'", 'cd "$SROBOTIS_REMOTE_ROOT"')
+    for token in forbidden:
+        if token in text:
+            fail(f"docs/module-skill-template.md must not hardcode execution root: {token}")
+
+
 def assert_base_skill_contracts() -> None:
     build_text = (SKILLS_ROOT / "spacemit-robot-build" / "SKILL.md").read_text(encoding="utf-8")
     remote_text = (SKILLS_ROOT / "spacemit-robot-remote" / "SKILL.md").read_text(encoding="utf-8")
@@ -315,6 +384,7 @@ def main() -> int:
         assert_frontmatter_and_map,
         assert_component_contracts,
         assert_sdk_root_variable_rules,
+        assert_module_skill_template_rules,
         assert_base_skill_contracts,
         assert_install_metadata,
         assert_runtime_helpers,
