@@ -27,13 +27,13 @@ metadata:
 ## 默认规则
 
 - `build_hint`: `single_package_first`
-- SDK 内模块路径：`$SPACEMIT_SDK_ROOT/components/multimedia/audio_process/doa`。
+- SDK 内模块路径：`$SROBOTIS_ROOT/components/multimedia/audio_process/doa`。
 - PR 测试使用合成音频和错误路径，不要求真实麦克风。
 - 真实多麦定位只在确认设备通道数、麦克风几何和人工看护后设置 `DOA_MANUAL_RUN=1` 跑 `manual` scope。
 
 ## 固定流程
 
-1. 确认 `$SPACEMIT_SDK_ROOT` 指向完整 SDK。
+1. 确认 `$SROBOTIS_ROOT` 指向完整 SDK。
 2. 在 SDK 根目录执行 `source build/envsetup.sh`。
 3. 构建时执行 `cd components/multimedia/audio_process/doa && mm`。
 4. 测试前执行 `./scripts/test/robot-test list components/multimedia/audio_process/doa`。
@@ -51,8 +51,8 @@ metadata:
 
 | 意图 | 动作 |
 | ---- | ---- |
-| 构建 DOA | `cd "$SPACEMIT_SDK_ROOT" && source build/envsetup.sh && cd components/multimedia/audio_process/doa && mm` |
-| 列出 CI 用例 | `cd "$SPACEMIT_SDK_ROOT" && ./scripts/test/robot-test list components/multimedia/audio_process/doa` |
-| 跑 PR 测试 | `cd "$SPACEMIT_SDK_ROOT" && ./scripts/test/robot-test run components/multimedia/audio_process/doa --scope pr` |
-| 跑手动多麦 smoke | `cd "$SPACEMIT_SDK_ROOT" && DOA_MANUAL_RUN=1 ./scripts/test/robot-test run components/multimedia/audio_process/doa --scope manual` |
-| 检查 demo | `test -x "$SPACEMIT_SDK_ROOT/output/staging/bin/ssl_demo" && echo found || echo missing` |
+| 构建 DOA | `cd "$SROBOTIS_ROOT" && source build/envsetup.sh && cd components/multimedia/audio_process/doa && mm` |
+| 列出 CI 用例 | `cd "$SROBOTIS_ROOT" && ./scripts/test/robot-test list components/multimedia/audio_process/doa` |
+| 跑 PR 测试 | `cd "$SROBOTIS_ROOT" && ./scripts/test/robot-test run components/multimedia/audio_process/doa --scope pr` |
+| 跑手动多麦 smoke | `cd "$SROBOTIS_ROOT" && DOA_MANUAL_RUN=1 ./scripts/test/robot-test run components/multimedia/audio_process/doa --scope manual` |
+| 检查 demo | `test -x "$SROBOTIS_ROOT/output/staging/bin/ssl_demo" && echo found || echo missing` |

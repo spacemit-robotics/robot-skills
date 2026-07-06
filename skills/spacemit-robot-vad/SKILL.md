@@ -30,7 +30,7 @@ metadata:
 ## 默认规则
 
 - `build_hint`: `single_package_first`
-- SDK 内模块路径：`$SPACEMIT_SDK_ROOT/components/model_zoo/vad`。
+- SDK 内模块路径：`$SROBOTIS_ROOT/components/model_zoo/vad`。
 - PR 测试默认跑 `test.yaml` 里的无模型 mock/contract 用例；不要要求 docker，也不要要求下载模型。
 - 有 `~/.cache/models/vad/silero/silero_vad.onnx` 时，可额外跑真实 Silero smoke；没有模型时只报告跳过真实推理，不能把缺模型当作 PR 失败。
 - 不默认先读 README；只有参数、模型路径、API 行为不清或命令失败时，才回读 `primary_docs`、`API.md`、`include/vad_service.h` 或测试源码。
@@ -38,7 +38,7 @@ metadata:
 ## 固定流程
 
 1. 先确认 SDK 根可用；无 SDK 就转 bootstrap。
-2. 在 `$SPACEMIT_SDK_ROOT` 下执行 `source build/envsetup.sh`。
+2. 在 `$SROBOTIS_ROOT` 下执行 `source build/envsetup.sh`。
 3. 需要构建时优先执行 `cd components/model_zoo/vad && mm`。
 4. 需要测试时先执行 `./scripts/test/robot-test list components/model_zoo/vad`。
 5. PR 验证执行 `./scripts/test/robot-test run components/model_zoo/vad --scope pr`，返回通过情况和日志路径。
@@ -50,18 +50,18 @@ metadata:
 ### 构建组件
 
 ```bash
-cd "$SPACEMIT_SDK_ROOT"
+cd "$SROBOTIS_ROOT"
 source build/envsetup.sh
 cd components/model_zoo/vad
 mm
 ```
 
-构建后优先确认 `vad_simple_demo` 是否在 `PATH` 中；Python wheel 通常输出到 `$SPACEMIT_SDK_ROOT/output/dist/`。
+构建后优先确认 `vad_simple_demo` 是否在 `PATH` 中；Python wheel 通常输出到 `$SROBOTIS_ROOT/output/dist/`。
 
 ### 运行 PR 测试
 
 ```bash
-cd "$SPACEMIT_SDK_ROOT"
+cd "$SROBOTIS_ROOT"
 ./scripts/test/robot-test list components/model_zoo/vad
 ./scripts/test/robot-test run components/model_zoo/vad --scope pr
 ```
@@ -74,7 +74,7 @@ cd "$SPACEMIT_SDK_ROOT"
 
 ```bash
 test -f ~/.cache/models/vad/silero/silero_vad.onnx
-cd "$SPACEMIT_SDK_ROOT"
+cd "$SROBOTIS_ROOT"
 source build/envsetup.sh
 vad_simple_demo
 ```
@@ -93,9 +93,9 @@ vad_simple_demo
 
 | 意图 | 动作 |
 | ---- | ---- |
-| 构建 VAD | `cd "$SPACEMIT_SDK_ROOT" && source build/envsetup.sh && cd components/model_zoo/vad && mm` |
-| 列出 CI 用例 | `cd "$SPACEMIT_SDK_ROOT" && ./scripts/test/robot-test list components/model_zoo/vad` |
-| 跑 PR 测试 | `cd "$SPACEMIT_SDK_ROOT" && ./scripts/test/robot-test run components/model_zoo/vad --scope pr` |
+| 构建 VAD | `cd "$SROBOTIS_ROOT" && source build/envsetup.sh && cd components/model_zoo/vad && mm` |
+| 列出 CI 用例 | `cd "$SROBOTIS_ROOT" && ./scripts/test/robot-test list components/model_zoo/vad` |
+| 跑 PR 测试 | `cd "$SROBOTIS_ROOT" && ./scripts/test/robot-test run components/model_zoo/vad --scope pr` |
 | 检查模型 | `test -f ~/.cache/models/vad/silero/silero_vad.onnx && echo found || echo missing` |
-| 真实 C++ smoke | `cd "$SPACEMIT_SDK_ROOT" && source build/envsetup.sh && vad_simple_demo` |
+| 真实 C++ smoke | `cd "$SROBOTIS_ROOT" && source build/envsetup.sh && vad_simple_demo` |
 | Python 导入检查 | `python -c "import spacemit_vad; print(spacemit_vad.__version__)"` |

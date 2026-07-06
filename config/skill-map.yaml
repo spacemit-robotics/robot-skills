@@ -2,84 +2,84 @@ skills:
   - name: spacemit-robot-shared
     category: shared
     primary_docs:
-      - README.md
+      - build/README.md
+      - target/README.md
+      - docs/coding_standards.md
   - name: spacemit-robot-sdk-bootstrap
     category: setup
     primary_docs:
-      - README.md
       - build/README.md
       - target/README.md
-  - name: spacemit-build
+      - docs/coding_standards.md
+  - name: spacemit-robot-remote
+    category: execution
+    primary_docs:
+      - docs/coding_standards.md
+  - name: spacemit-robot-build
     category: build
     primary_docs:
       - build/README.md
       - target/README.md
-  - name: spacemit-omni-agent
-    category: application
+  - name: spacemit-robot-sync
+    category: sync
     primary_docs:
-      - application/native/omni_agent/README.md
-      - build/README.md
+      - docs/coding_standards.md
   - name: spacemit-robot-llm
     category: components
     primary_docs:
       - components/model_zoo/llm/README.md
-      - components/model_zoo/llm/include/llm_service.h
+      - components/model_zoo/llm/package.xml
   - name: spacemit-robot-asr
     category: components
     primary_docs:
       - components/model_zoo/asr/README.md
-      - components/model_zoo/asr/test.yaml
       - components/model_zoo/asr/package.xml
-      - components/model_zoo/asr/include/asr_service.h
+      - components/model_zoo/asr/test.yaml
   - name: spacemit-robot-tts
     category: components
     primary_docs:
       - components/model_zoo/tts/README.md
-      - components/model_zoo/tts/test.yaml
       - components/model_zoo/tts/package.xml
-      - components/model_zoo/tts/include/tts_service.h
+      - components/model_zoo/tts/test.yaml
   - name: spacemit-robot-vad
     category: components
     primary_docs:
       - components/model_zoo/vad/README.md
-      - components/model_zoo/vad/test.yaml
       - components/model_zoo/vad/package.xml
+      - components/model_zoo/vad/test.yaml
   - name: spacemit-robot-voiceprint
     category: components
     primary_docs:
       - components/model_zoo/voiceprint/README.md
-      - components/model_zoo/voiceprint/test.yaml
       - components/model_zoo/voiceprint/package.xml
-      - components/model_zoo/voiceprint/include/vp_service.h
+      - components/model_zoo/voiceprint/test.yaml
   - name: spacemit-robot-audio
     category: components
     primary_docs:
       - components/multimedia/audio/README.md
-      - components/multimedia/audio/test.yaml
       - components/multimedia/audio/package.xml
-      - components/multimedia/audio/include/audio_base.hpp
+      - components/multimedia/audio/test.yaml
   - name: spacemit-robot-doa
     category: components
     primary_docs:
       - components/multimedia/audio_process/doa/README.md
-      - components/multimedia/audio_process/doa/test.yaml
       - components/multimedia/audio_process/doa/package.xml
-      - components/multimedia/audio_process/doa/include/doa_service.h
+      - components/multimedia/audio_process/doa/test.yaml
   - name: spacemit-robot-grasp
     category: components
     primary_docs:
       - components/control/grasp/README.md
-      - components/control/grasp/test.yaml
       - components/control/grasp/package.xml
+      - components/control/grasp/test.yaml
   - name: spacemit-robot-manipulator
     category: components
     primary_docs:
       - components/control/manipulator/README.md
-      - components/control/manipulator/test.yaml
       - components/control/manipulator/package.xml
+      - components/control/manipulator/test.yaml
   - name: spacemit-robot-lerobot-app
     category: application
     primary_docs:
       - application/native/lerobot_app/README.md
-      - application/native/lerobot_app/test.yaml
       - application/native/lerobot_app/package.xml
+      - application/native/lerobot_app/test.yaml

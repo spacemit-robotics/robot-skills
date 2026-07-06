@@ -1,0 +1,27 @@
+{
+  "$schema": "https://skills.sh/schemas/skills.sh.schema.json",
+  "notGrouped": "bottom",
+  "groupings": [
+    {
+      "title": "SpacemiT Robot SDK",
+      "description": "Install, inspect, build, sync, and develop SpacemiT Robot SDK projects with coding agents across board-local, PC-remote, and hybrid workflows.",
+      "skills": [
+        "spacemit-robot-shared",
+        "spacemit-robot-sdk-bootstrap",
+        "spacemit-robot-remote",
+        "spacemit-robot-build",
+        "spacemit-robot-sync",
+        "spacemit-robot-asr",
+        "spacemit-robot-tts",
+        "spacemit-robot-vad",
+        "spacemit-robot-voiceprint",
+        "spacemit-robot-llm",
+        "spacemit-robot-audio",
+        "spacemit-robot-doa",
+        "spacemit-robot-grasp",
+        "spacemit-robot-manipulator",
+        "spacemit-robot-lerobot-app"
+      ]
+    }
+  ]
+}

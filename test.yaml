@@ -2,7 +2,7 @@ module: robot-skills
 
 tests:
   - name: robot-skills-contract
-    description: Verifies local skill frontmatter, skill-map registration, SDK module paths, and test command entry points.
+    description: Verifies skill frontmatter, skill-map registration, install metadata, three-mode base skills, and thin component contracts.
     category: functional
     scopes: [pr]
     timeout_s: 120

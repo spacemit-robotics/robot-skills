@@ -27,13 +27,13 @@ metadata:
 ## 默认规则
 
 - `build_hint`: `single_package_first`
-- SDK 内模块路径：`$SPACEMIT_SDK_ROOT/components/model_zoo/voiceprint`。
+- SDK 内模块路径：`$SROBOTIS_ROOT/components/model_zoo/voiceprint`。
 - PR 测试使用 fake backend 验证注册、识别、验证和数据库逻辑，不要求模型。
 - 有 CAMPPlus 模型和样本音频时才跑真实 voiceprint smoke；缺模型不能作为 PR 失败。
 
 ## 固定流程
 
-1. 确认 `$SPACEMIT_SDK_ROOT` 指向完整 SDK。
+1. 确认 `$SROBOTIS_ROOT` 指向完整 SDK。
 2. 在 SDK 根目录执行 `source build/envsetup.sh`。
 3. 构建时执行 `cd components/model_zoo/voiceprint && mm`。
 4. 测试前执行 `./scripts/test/robot-test list components/model_zoo/voiceprint`。
@@ -51,8 +51,8 @@ metadata:
 
 | 意图 | 动作 |
 | ---- | ---- |
-| 构建 voiceprint | `cd "$SPACEMIT_SDK_ROOT" && source build/envsetup.sh && cd components/model_zoo/voiceprint && mm` |
-| 列出 CI 用例 | `cd "$SPACEMIT_SDK_ROOT" && ./scripts/test/robot-test list components/model_zoo/voiceprint` |
-| 跑 PR 测试 | `cd "$SPACEMIT_SDK_ROOT" && ./scripts/test/robot-test run components/model_zoo/voiceprint --scope pr` |
+| 构建 voiceprint | `cd "$SROBOTIS_ROOT" && source build/envsetup.sh && cd components/model_zoo/voiceprint && mm` |
+| 列出 CI 用例 | `cd "$SROBOTIS_ROOT" && ./scripts/test/robot-test list components/model_zoo/voiceprint` |
+| 跑 PR 测试 | `cd "$SROBOTIS_ROOT" && ./scripts/test/robot-test run components/model_zoo/voiceprint --scope pr` |
 | 检查 CAMPPlus 模型 | `test -d ~/.cache/models/vp/campplus && echo found || echo missing` |
 | 检查工具 | `command -v register_speaker && command -v identify_speaker` |

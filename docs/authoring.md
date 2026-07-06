@@ -2,28 +2,33 @@
 
 新建 skill 可参考 `../skill-template/skill-template.md`。
 
-## 规则
+## Rules
 
-- 运行时 agent 只会看到 `skills/` 下安装后的 `SKILL.md`；因此运行时必须遵守的规则只能写进 `skills/`，不能只写在模板、`docs/` 或仓库说明里。
-- 正文尽量短；重复内容归入 `spacemit-robot-shared` 或仅引用 SDK 文档路径。
-- 在 `../config/skill-map.yaml` 登记 `name`、`category`、`primary_docs`（相对 SDK 根）。
-- Frontmatter 必填：`name`、`description`；建议 `metadata.requires.bins`。
-- 若该 skill 的构建倾向与 shared 默认推导不同，显式声明 `metadata.sdk.build_hint`。
-- 专项 skill 不直接写死 `k1-*` 或 `k3-*` target 名；当需要 target 时，只说明“先解析 board，再显式选择 target”。
-- 专项 skill 应把本模块最关键的 SDK 文档写进 `primary_docs`，但它们是按需回源资料，不是默认前置阅读。
-- 正文优先写清“先做什么命令、失败时再回读什么文档”，不要默认要求每次都先读仓库级或组件级 README。
-- 模板文件只是作者脚手架，章节顺序和表述应镜像运行时 skill，而不是额外新增运行时语义。
+- 运行时 agent 只会看到安装后的 `SKILL.md`；必须遵守的规则只能写进 `skills/`。
+- 正文尽量短；三模式、SDK root、target、构建和同步规则归入基础 skill。
+- 在 `../config/skill-map.yaml` 登记 `name`、`category`、`primary_docs`。
+- Frontmatter 必填：`name`、`description`；组件建议声明 `metadata.sdk.module_paths`、`primary_docs`、`build_hint`。
+- SDK root 环境变量只使用 `SROBOTIS_ROOT`。
+- 组件 skill 不写死 SSH 命令、host、target、board 或用户路径。
+- 组件 skill 只声明模块路径、构建倾向、文档入口和专项注意事项。
+- 组件 skill 需要执行命令时引用 `spacemit-robot-shared`、`spacemit-robot-build`、`spacemit-robot-remote`、`spacemit-robot-sync`。
+- 日常开发验证不默认调用 `robot-test`；只有 CI、回归验证或用户明确要求时才使用。
+- `primary_docs` 是按需回源索引，不是每次请求的固定前置阅读列表。
+- 运行时 helper 不应要求用户额外安装 Python；能写成规则就写成规则，需要脚本时优先使用 Node.js，因为安装流程已经依赖 `npx`/npm。
 
-## 推荐结构
+## Recommended Structure
 
-- `shared`：只保留全局规则与路由，例如读取优先级、SDK 根、`build_hint`、target 选择。
-- `bootstrap`：只保留首次拉取与初始化，例如依赖、`repo init/sync`、导出 `SPACEMIT_SDK_ROOT`、验证目录。
-- 专项 skill：统一优先使用以下章节：`何时使用`、`默认规则`、`固定流程`、`专项任务`、`禁止事项`、`常见任务与命令`。
+- `shared`: 三模式、配置优先级、SDK root、target、路由。
+- `bootstrap`: 首次初始化、依赖、repo init/sync、SDK root 验证。
+- `remote`: SSH 检查、远程 SDK root 检查、远程命令执行。
+- `build`: `envsetup.sh`、`lunch`、`m`、`mm` 的构建决策。
+- `sync`: hybrid 单向同步、dry-run、路径保护、repo preflight。
+- 组件 skill: `Contract`、`Workflow`、`Notes`。
 
-## 目录
+## Directory
 
 ```text
 robot-skills/skills/<skill-name>/
 ├── SKILL.md
-└── references/     # 可选；仅当正文仍需拆出时才加
+└── scripts/      # 可选；脆弱或重复的操作放脚本
 ```

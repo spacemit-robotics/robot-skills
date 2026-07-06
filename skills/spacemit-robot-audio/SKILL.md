@@ -27,13 +27,13 @@ metadata:
 ## 默认规则
 
 - `build_hint`: `single_package_first`
-- SDK 内模块路径：`$SPACEMIT_SDK_ROOT/components/multimedia/audio`。
+- SDK 内模块路径：`$SROBOTIS_ROOT/components/multimedia/audio`。
 - PR 测试只验证 resampler 和无设备错误路径，不要求麦克风或扬声器。
 - 真实录音/播放只能在确认设备和人工看护后设置 `AUDIO_MANUAL_RUN=1` 跑 `manual` scope。
 
 ## 固定流程
 
-1. 确认 `$SPACEMIT_SDK_ROOT` 指向完整 SDK。
+1. 确认 `$SROBOTIS_ROOT` 指向完整 SDK。
 2. 在 SDK 根目录执行 `source build/envsetup.sh`。
 3. 构建时执行 `cd components/multimedia/audio && mm`。
 4. 测试前执行 `./scripts/test/robot-test list components/multimedia/audio`。
@@ -51,8 +51,8 @@ metadata:
 
 | 意图 | 动作 |
 | ---- | ---- |
-| 构建 audio | `cd "$SPACEMIT_SDK_ROOT" && source build/envsetup.sh && cd components/multimedia/audio && mm` |
-| 列出 CI 用例 | `cd "$SPACEMIT_SDK_ROOT" && ./scripts/test/robot-test list components/multimedia/audio` |
-| 跑 PR 测试 | `cd "$SPACEMIT_SDK_ROOT" && ./scripts/test/robot-test run components/multimedia/audio --scope pr` |
-| 跑手动设备 smoke | `cd "$SPACEMIT_SDK_ROOT" && AUDIO_MANUAL_RUN=1 ./scripts/test/robot-test run components/multimedia/audio --scope manual` |
+| 构建 audio | `cd "$SROBOTIS_ROOT" && source build/envsetup.sh && cd components/multimedia/audio && mm` |
+| 列出 CI 用例 | `cd "$SROBOTIS_ROOT" && ./scripts/test/robot-test list components/multimedia/audio` |
+| 跑 PR 测试 | `cd "$SROBOTIS_ROOT" && ./scripts/test/robot-test run components/multimedia/audio --scope pr` |
+| 跑手动设备 smoke | `cd "$SROBOTIS_ROOT" && AUDIO_MANUAL_RUN=1 ./scripts/test/robot-test run components/multimedia/audio --scope manual` |
 | 列出设备 | `arecord -l && aplay -l` |

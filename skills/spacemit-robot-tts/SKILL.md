@@ -27,13 +27,13 @@ metadata:
 ## 默认规则
 
 - `build_hint`: `single_package_first`
-- SDK 内模块路径：`$SPACEMIT_SDK_ROOT/components/model_zoo/tts`。
+- SDK 内模块路径：`$SROBOTIS_ROOT/components/model_zoo/tts`。
 - PR 测试只验证 presets、builder、音频 chunk 转换和错误路径，不要求模型。
 - 有模型和 demo/wheel 时才跑真实合成 smoke；缺模型不能作为 PR 失败。
 
 ## 固定流程
 
-1. 确认 `$SPACEMIT_SDK_ROOT` 指向完整 SDK。
+1. 确认 `$SROBOTIS_ROOT` 指向完整 SDK。
 2. 在 SDK 根目录执行 `source build/envsetup.sh`。
 3. 构建时执行 `cd components/model_zoo/tts && mm`。
 4. 测试前执行 `./scripts/test/robot-test list components/model_zoo/tts`。
@@ -51,8 +51,8 @@ metadata:
 
 | 意图 | 动作 |
 | ---- | ---- |
-| 构建 TTS | `cd "$SPACEMIT_SDK_ROOT" && source build/envsetup.sh && cd components/model_zoo/tts && mm` |
-| 列出 CI 用例 | `cd "$SPACEMIT_SDK_ROOT" && ./scripts/test/robot-test list components/model_zoo/tts` |
-| 跑 PR 测试 | `cd "$SPACEMIT_SDK_ROOT" && ./scripts/test/robot-test run components/model_zoo/tts --scope pr` |
+| 构建 TTS | `cd "$SROBOTIS_ROOT" && source build/envsetup.sh && cd components/model_zoo/tts && mm` |
+| 列出 CI 用例 | `cd "$SROBOTIS_ROOT" && ./scripts/test/robot-test list components/model_zoo/tts` |
+| 跑 PR 测试 | `cd "$SROBOTIS_ROOT" && ./scripts/test/robot-test run components/model_zoo/tts --scope pr` |
 | 检查 Matcha 模型 | `test -d ~/.cache/models/tts/matcha-tts && echo found || echo missing` |
 | Python 导入检查 | `python -c "import spacemit_tts; print(spacemit_tts.__version__)"` |

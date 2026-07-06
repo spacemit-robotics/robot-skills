@@ -27,7 +27,7 @@ metadata:
 ## 默认规则
 
 - 构建倾向：`single_package_first`，优先在模块目录执行 `mm`，只有确实需要产品配置时再按 shared 规则选择 target。
-- SDK 内模块路径：`$SPACEMIT_SDK_ROOT/components/model_zoo/llm`。
+- SDK 内模块路径：`$SROBOTIS_ROOT/components/model_zoo/llm`。
 - 默认模型目录：`~/.cache/models/llm`；不要把大模型文件放进 SDK 仓库。
 - 默认模型源：`https://archive.spacemit.com/spacemit-ai/model_zoo/llm/`。
 - 性能采集直接使用 `llama-bench`；线程数默认按 README 使用 `-t 8`，同时保留 `-p 128 -n 128 -mmp 0 -fa 1`。
@@ -35,9 +35,9 @@ metadata:
 
 ## 固定流程
 
-1. 确认 `$SPACEMIT_SDK_ROOT` 指向完整 SDK，至少包含 `build/`、`components/`、`target/`。
+1. 确认 `$SROBOTIS_ROOT` 指向完整 SDK，至少包含 `build/`、`components/`、`target/`。
 2. 在 SDK 根目录执行 `source build/envsetup.sh`。
-3. 需要构建时执行 `cd "$SPACEMIT_SDK_ROOT/components/model_zoo/llm" && mm`。
+3. 需要构建时执行 `cd "$SROBOTIS_ROOT/components/model_zoo/llm" && mm`。
 4. 运行前检查 `llama-server`、`llama-cli`、`llama-bench`、`llm_chat` 是否可用；缺系统包时按 `package.xml` 和 README 补装。
 5. 运行前检查模型文件：优先复用 `~/.cache/models/llm/*.gguf` 或用户指定路径；缺模型时按下方“模型解析与下载”处理。
 6. 执行型请求必须真实运行命令，并返回模型路径、命令、关键输出、耗时或失败点。
@@ -47,7 +47,7 @@ metadata:
 ### 构建组件
 
 ```bash
-cd "$SPACEMIT_SDK_ROOT"
+cd "$SROBOTIS_ROOT"
 source build/envsetup.sh
 cd components/model_zoo/llm
 mm
@@ -132,7 +132,7 @@ llama-bench \
 
 | 意图 | 命令 |
 | ---- | ---- |
-| 构建 LLM 组件 | `cd "$SPACEMIT_SDK_ROOT" && source build/envsetup.sh && cd components/model_zoo/llm && mm` |
+| 构建 LLM 组件 | `cd "$SROBOTIS_ROOT" && source build/envsetup.sh && cd components/model_zoo/llm && mm` |
 | 查找模型 | `ls ~/.cache/models/llm/*.gguf` |
 | 验证模型输出 | `llama-cli -m ~/.cache/models/llm/<model>.gguf -t 4 -p "<prompt>"` |
 | 启动 OpenAI 兼容服务 | `llama-server -m ~/.cache/models/llm/<model>.gguf -t 8 --port 8080` |
