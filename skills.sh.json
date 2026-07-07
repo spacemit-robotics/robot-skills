@@ -8,6 +8,7 @@
       "skills": [
         "spacemit-robot-shared",
         "spacemit-robot-sdk-bootstrap",
+        "spacemit-robot-software-setup",
         "spacemit-robot-remote",
         "spacemit-robot-build",
         "spacemit-robot-sync",

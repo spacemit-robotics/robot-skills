@@ -80,6 +80,7 @@ description: SpacemiT Robot SDK 共享基线；用于选择 local、remote、hyb
 ## Routing
 
 - 首次拉取或初始化 SDK：`spacemit-robot-sdk-bootstrap`
+- 软件包安装、ROS2 依赖、SpacemiT 运行包、Python/pip/uv 源配置：`spacemit-robot-software-setup`
 - SSH 与远程命令：`spacemit-robot-remote`
 - 构建决策：`spacemit-robot-build`
 - Hybrid 同步：`spacemit-robot-sync`

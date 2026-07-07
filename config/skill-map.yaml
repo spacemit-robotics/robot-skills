@@ -11,6 +11,16 @@ skills:
       - build/README.md
       - target/README.md
       - docs/coding_standards.md
+  - name: spacemit-robot-software-setup
+    category: setup
+    primary_docs:
+      - build/README.md
+      - build/package.xml
+      - build/package_ros2.xml
+      - build/envsetup.sh
+      - build/python_env_build.sh
+      - scripts/test/run_tests.py
+      - components/ai-gateway/README.md
   - name: spacemit-robot-remote
     category: execution
     primary_docs:
