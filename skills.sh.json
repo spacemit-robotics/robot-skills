@@ -20,7 +20,8 @@
         "spacemit-robot-doa",
         "spacemit-robot-grasp",
         "spacemit-robot-manipulator",
-        "spacemit-robot-lerobot-app"
+        "spacemit-robot-lerobot-app",
+        "spacemit-robot-linksee"
       ]
     }
   ]
