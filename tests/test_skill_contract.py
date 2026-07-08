@@ -28,6 +28,7 @@ COMPONENT_SKILLS = {
     "spacemit-robot-vad": "components/model_zoo/vad",
     "spacemit-robot-voiceprint": "components/model_zoo/voiceprint",
     "spacemit-robot-llm": "components/model_zoo/llm",
+    "spacemit-robot-lerobot-onnx-inference": "components/thirdparty/lerobot/examples/onnx_inference",
     "spacemit-robot-audio": "components/multimedia/audio",
     "spacemit-robot-doa": "components/multimedia/audio_process/doa",
     "spacemit-robot-grasp": "components/control/grasp",

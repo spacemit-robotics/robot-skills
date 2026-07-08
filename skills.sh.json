@@ -17,6 +17,7 @@
         "spacemit-robot-vad",
         "spacemit-robot-voiceprint",
         "spacemit-robot-llm",
+        "spacemit-robot-lerobot-onnx-inference",
         "spacemit-robot-audio",
         "spacemit-robot-doa",
         "spacemit-robot-grasp",
