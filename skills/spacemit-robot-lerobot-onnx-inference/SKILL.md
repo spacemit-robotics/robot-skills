@@ -2,7 +2,7 @@
 name: spacemit-robot-lerobot-onnx-inference
 description: >-
   components/thirdparty/lerobot/examples/onnx_inference 的 ACT 与 SmolVLA
-  ONNX 部署专项入口；用于模型下载、PC 导出/量化/fp16 算子手术、数值对比、K3
+  ONNX 部署专项入口；用于模型下载、PC 导出/量化/FP16 图修复、数值对比、K3
   C++ benchmark、dry-run 和 SO-101 真机运行。
 metadata:
   requires:
@@ -27,7 +27,7 @@ metadata:
 ## 何时使用
 
 - 用户要部署、验证或调试 `examples/onnx_inference` 下的 ACT / SmolVLA ONNX 示例。
-- 用户要下载示例模型、从 PyTorch checkpoint 导出 ONNX、量化 ACT INT8、转换 SmolVLA FP16 或执行 fp16 算子手术。
+- 用户要下载示例模型、从 PyTorch checkpoint 导出 ONNX、量化 ACT INT8、转换 SmolVLA FP16 或执行 FP16 图修复。
 - 用户要在 K3 上跑 ACT / SmolVLA benchmark、数值对比、dry-run 或 SO-101 真机运行。
 
 ## 默认规则
@@ -47,7 +47,7 @@ metadata:
 3. 若用户要求“跑测试 / CI 验证 / PR 验证”，优先跑 `pr` functional。
 4. 若用户要求“测性能 / K3 benchmark / scheduled 测试”，必须跑 `scheduled` performance；该 scope 覆盖 ACT 和 SmolVLA，会真实下载或复用发布模型，构建 C++，并在 K3 上跑 SpaceMIT EP benchmark。
 5. 遇到 K3 真机任务时，先确认目标机、登录用户、模型路径、SDK 路径、相机映射和 `/dev/ttyACM*`；不要凭旧板卡地址或相机编号下结论。
-6. 根据用户意图选择 ACT 或 SmolVLA；不要把 ACT INT8 流程套到 SmolVLA，也不要把 SmolVLA fp16 手术要求套到 ACT。
+6. 根据用户意图选择 ACT 或 SmolVLA；不要把 ACT INT8 流程套到 SmolVLA，也不要把 SmolVLA FP16 图修复要求套到 ACT。
 7. 修改或生成 ONNX 模型后，先跑 `compare_*_onnx.py` 做数值验证，再跑 benchmark；benchmark 不能替代数值正确性检查。
 
 ## Robot-test 用例
@@ -123,7 +123,7 @@ ln -sfn ../../../so101_smolvla_pick_green_cube_2cam/checkpoints/100000/pretraine
   models/pytorch/smolvla/checkpoints/100000/pretrained_model
 ```
 
-### PC 导出、FP16 转换与手术
+### PC 导出、FP16 转换与图修复
 
 ```bash
 cd "$SROBOTIS_ROOT/components/thirdparty/lerobot/examples/onnx_inference"
@@ -144,7 +144,7 @@ python tools/surgery_smolvla_fp16.py \
   --output-dir models/onnx/smolvla-fp16-surgeried
 ```
 
-手术内容必须包含：
+图修复内容必须包含：
 
 - `vision_encoder` self-attention 核心融合为 `VisionSelfAttnNHWC`，MLP GELU 近似子图替换为 ONNX `Gelu(approximate="tanh")`。
 - `prefill_lm` / `denoise_step` RMSNorm 关键计算 fp32 化。
@@ -264,7 +264,7 @@ ACT 真机需要 `-DACT_ROBOT_HW=ON` 重新构建，并传入 `--stats`、`--por
 - 不要在 `robot-skills` 仓库目录里直接执行 SDK 部署、模型下载或 benchmark 命令。
 - 不要把下载的模型、ONNX 产物、EP SDK、日志或相机 dump 提交到 SDK 或 `robot-skills`。
 - 不要只跑 benchmark 就宣称数值正确；SmolVLA 必须配套 `compare_smolvla_onnx.py` 或 dry-run 数值检查。
-- 不要为 SmolVLA fp16 添加额外环境变量；EP204 SDK 和手术版模型是默认性能路径。
+- 不要为 SmolVLA FP16 添加额外环境变量；EP204 SDK 和图修复版模型是默认性能路径。
 - 不要写死 K3 IP、root 密码、相机编号或串口编号；每次按用户最新信息和板端设备实际状态确认。
 
 ## 常见任务与命令
@@ -276,7 +276,7 @@ ACT 真机需要 `-DACT_ROBOT_HW=ON` 重新构建，并传入 `--stats`、`--por
 | PR 轻量验证 | `cd "$SROBOTIS_ROOT" && ./scripts/test/robot-test run components/thirdparty/lerobot/examples/onnx_inference --scope pr --category functional` |
 | K3 scheduled 性能测试 | `cd "$SROBOTIS_ROOT" && ./scripts/test/robot-test run components/thirdparty/lerobot/examples/onnx_inference --scope scheduled --category performance` |
 | 下载 SmolVLA EP204 SDK | `curl -L https://archive.spacemit.com/spacemit-ai/model_zoo/vla/smolvla/spacemit-ort-sdk/spacemit-ort.riscv64.2.0.4_yyx.tar.gz -o /tmp/smolvla_models/spacemit-ort.riscv64.2.0.4_yyx.tar.gz` |
-| SmolVLA FP16 手术 | `python tools/surgery_smolvla_fp16.py --input-dir models/onnx/smolvla-fp16 --output-dir models/onnx/smolvla-fp16-surgeried` |
+| SmolVLA FP16 图修复 | `python tools/surgery_smolvla_fp16.py --input-dir models/onnx/smolvla-fp16 --output-dir models/onnx/smolvla-fp16-surgeried` |
 | SmolVLA 数值对比 | `python tools/compare_smolvla_onnx.py --fp32-dir models/onnx/smolvla-fp32 --fp16-dir models/onnx/smolvla-fp16-surgeried --use-spacemit-ep --spacemit-ort-dir ~/spacemit-ort.riscv64.2.0.4_yyx --ep-threads 8 --ep-affinity "8;9;10;11;12;13;14;15" --num-cameras 2 --denoise-steps 10` |
 | SmolVLA C++ 构建 | `cd cpp && ./build_smolvla_robot_cpp.sh EP204` |
 | SmolVLA benchmark | `cd cpp && DRY_RUN=1 WARMUP=4 ./run_smolvla_robot_pipeline.sh --warmup-only --n-action-steps 50` |
