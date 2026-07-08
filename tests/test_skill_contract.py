@@ -7,6 +7,7 @@ from __future__ import annotations
 import json
 import os
 import pathlib
+import re
 import subprocess
 import sys
 
@@ -23,16 +24,18 @@ BASE_SKILLS = {
 }
 
 COMPONENT_SKILLS = {
-    "spacemit-robot-asr": "components/model_zoo/asr",
-    "spacemit-robot-tts": "components/model_zoo/tts",
-    "spacemit-robot-vad": "components/model_zoo/vad",
-    "spacemit-robot-voiceprint": "components/model_zoo/voiceprint",
-    "spacemit-robot-llm": "components/model_zoo/llm",
-    "spacemit-robot-audio": "components/multimedia/audio",
-    "spacemit-robot-doa": "components/multimedia/audio_process/doa",
-    "spacemit-robot-grasp": "components/control/grasp",
-    "spacemit-robot-manipulator": "components/control/manipulator",
-    "spacemit-robot-lerobot-app": "application/native/lerobot_app",
+    "spacemit-robot-speech": (
+        "components/multimedia/audio",
+        "components/model_zoo/asr",
+        "components/model_zoo/vad",
+        "components/model_zoo/tts",
+        "components/model_zoo/voiceprint",
+        "components/multimedia/audio_process/doa",
+    ),
+    "spacemit-robot-llm": ("components/model_zoo/llm",),
+    "spacemit-robot-grasp": ("components/control/grasp",),
+    "spacemit-robot-manipulator": ("components/control/manipulator",),
+    "spacemit-robot-lerobot-app": ("application/native/lerobot_app",),
 }
 
 BASE_REFERENCES = (
@@ -165,7 +168,7 @@ def assert_frontmatter_and_map() -> None:
 
 def assert_component_contracts() -> None:
     entries = skill_map_entries()
-    for name, module_path in COMPONENT_SKILLS.items():
+    for name, module_paths_expected in COMPONENT_SKILLS.items():
         skill_path = SKILLS_ROOT / name / "SKILL.md"
         if not skill_path.exists():
             fail(f"{name}: SKILL.md is missing")
@@ -178,10 +181,21 @@ def assert_component_contracts() -> None:
         meta, body = parse_frontmatter(skill_path)
         sdk_meta = (meta.get("metadata") or {}).get("sdk") or {}
         module_paths = sdk_meta.get("module_paths") or []
-        if module_path not in module_paths:
-            fail(f"{name}: metadata.sdk.module_paths must include {module_path}")
+        for module_path in module_paths_expected:
+            if module_path not in module_paths:
+                fail(f"{name}: metadata.sdk.module_paths must include {module_path}")
         if not sdk_meta.get("build_hint"):
             fail(f"{name}: metadata.sdk.build_hint is required")
+
+
+def assert_skill_reference_links() -> None:
+    reference_pattern = re.compile(r"references/[A-Za-z0-9_.-]+\.md")
+    for skill_path in local_skill_paths():
+        _meta, body = parse_frontmatter(skill_path)
+        for rel in sorted(set(reference_pattern.findall(body))):
+            target = skill_path.parent / rel
+            if not target.exists():
+                fail(f"{skill_path}: referenced file is missing: {rel}")
 
 
 def assert_sdk_root_variable_rules() -> None:
@@ -383,6 +397,7 @@ def main() -> int:
     checks = (
         assert_frontmatter_and_map,
         assert_component_contracts,
+        assert_skill_reference_links,
         assert_sdk_root_variable_rules,
         assert_module_skill_template_rules,
         assert_base_skill_contracts,

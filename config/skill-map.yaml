@@ -39,39 +39,25 @@ skills:
     primary_docs:
       - components/model_zoo/llm/README.md
       - components/model_zoo/llm/package.xml
-  - name: spacemit-robot-asr
+  - name: spacemit-robot-speech
     category: components
     primary_docs:
-      - components/model_zoo/asr/README.md
-      - components/model_zoo/asr/package.xml
-      - components/model_zoo/asr/test.yaml
-  - name: spacemit-robot-tts
-    category: components
-    primary_docs:
-      - components/model_zoo/tts/README.md
-      - components/model_zoo/tts/package.xml
-      - components/model_zoo/tts/test.yaml
-  - name: spacemit-robot-vad
-    category: components
-    primary_docs:
-      - components/model_zoo/vad/README.md
-      - components/model_zoo/vad/package.xml
-      - components/model_zoo/vad/test.yaml
-  - name: spacemit-robot-voiceprint
-    category: components
-    primary_docs:
-      - components/model_zoo/voiceprint/README.md
-      - components/model_zoo/voiceprint/package.xml
-      - components/model_zoo/voiceprint/test.yaml
-  - name: spacemit-robot-audio
-    category: components
-    primary_docs:
-      - components/multimedia/audio/README.md
+      - components/multimedia/audio/API.md
       - components/multimedia/audio/package.xml
       - components/multimedia/audio/test.yaml
-  - name: spacemit-robot-doa
-    category: components
-    primary_docs:
+      - components/model_zoo/asr/API.md
+      - components/model_zoo/asr/package.xml
+      - components/model_zoo/asr/test.yaml
+      - components/model_zoo/vad/API.md
+      - components/model_zoo/vad/package.xml
+      - components/model_zoo/vad/test.yaml
+      - components/model_zoo/tts/API.md
+      - components/model_zoo/tts/package.xml
+      - components/model_zoo/tts/test.yaml
+      - components/model_zoo/voiceprint/API.md
+      - components/model_zoo/voiceprint/package.xml
+      - components/model_zoo/voiceprint/test.yaml
+      - components/multimedia/audio_process/doa/API.md
       - components/multimedia/audio_process/doa/README.md
       - components/multimedia/audio_process/doa/package.xml
       - components/multimedia/audio_process/doa/test.yaml
