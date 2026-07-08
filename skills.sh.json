@@ -14,6 +14,7 @@
         "spacemit-robot-sync",
         "spacemit-robot-speech",
         "spacemit-robot-llm",
+        "spacemit-robot-lerobot-onnx-inference",
         "spacemit-robot-grasp",
         "spacemit-robot-manipulator",
         "spacemit-robot-lerobot-app"

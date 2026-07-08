@@ -39,6 +39,14 @@ skills:
     primary_docs:
       - components/model_zoo/llm/README.md
       - components/model_zoo/llm/package.xml
+  - name: spacemit-robot-lerobot-onnx-inference
+    category: components
+    primary_docs:
+      - components/thirdparty/lerobot/examples/onnx_inference/README.md
+      - components/thirdparty/lerobot/examples/onnx_inference/tools/README.md
+      - components/thirdparty/lerobot/examples/onnx_inference/cpp/README.md
+      - components/thirdparty/lerobot/examples/onnx_inference/python/README.md
+      - components/thirdparty/lerobot/examples/onnx_inference/test.yaml
   - name: spacemit-robot-speech
     category: components
     primary_docs:
