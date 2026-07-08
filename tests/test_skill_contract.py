@@ -33,6 +33,7 @@ COMPONENT_SKILLS = {
         "components/multimedia/audio_process/doa",
     ),
     "spacemit-robot-llm": ("components/model_zoo/llm",),
+    "spacemit-robot-lerobot-onnx-inference": ("components/thirdparty/lerobot/examples/onnx_inference",),
     "spacemit-robot-grasp": ("components/control/grasp",),
     "spacemit-robot-manipulator": ("components/control/manipulator",),
     "spacemit-robot-lerobot-app": ("application/native/lerobot_app",),
