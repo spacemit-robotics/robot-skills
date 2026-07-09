@@ -30,14 +30,14 @@ metadata:
 ## 默认规则
 
 - `build_hint`: `single_package_first`
-- `robot-skills` 仓库与 SDK 仓库独立；所有命令都必须在 `$SPACEMIT_SDK_ROOT` 下执行，不要假设当前目录与 SDK 相邻。
+- `robot-skills` 仓库与 SDK 仓库独立；所有命令都必须在 `$SROBOTIS_ROOT` 下执行，不要假设当前目录与 SDK 相邻。
 - 不默认先读总览文档或 README；只有命令细节、参数语义或失败点不清，才回读 `primary_docs`、测试脚本或 benchmark 源码。
 - `pr` 用例只做轻量验证；ACT 模型下载和性能测试默认走 `scheduled`、`release` 或显式手动执行。
 
 ## 固定流程
 
 1. 先确认 SDK 根可用；若当前机器没有完整 SDK，就转 bootstrap，不在 `robot-skills` 仓库里直接运行测试。
-2. 在 `$SPACEMIT_SDK_ROOT` 下执行 `source build/envsetup.sh`。
+2. 在 `$SROBOTIS_ROOT` 下执行 `source build/envsetup.sh`。
 3. 测试前先确认 `scripts/test/robot-test`、
   `application/native/lerobot_app/test.yaml`、
   `application/native/lerobot_app/tests/test_act_dummy_performance.sh` 存在。
@@ -51,7 +51,7 @@ metadata:
 1. 进入 SDK 根目录：
 
 ```bash
-cd "$SPACEMIT_SDK_ROOT"
+cd "$SROBOTIS_ROOT"
 source build/envsetup.sh
 ```
 
@@ -110,9 +110,9 @@ LEROBOT_ACT_WARMUP=3 LEROBOT_ACT_ITERS=10 LEROBOT_ACT_MAX_AVG_MS=5000 \
 
 | 意图 | 动作 |
 | ---- | ---- |
-| 列出测试 | `cd "$SPACEMIT_SDK_ROOT" && ./scripts/test/robot-test list application/native/lerobot_app` |
-| PR 轻量验证 | `cd "$SPACEMIT_SDK_ROOT" && ./scripts/test/robot-test run application/native/lerobot_app --scope pr` |
-| ACT 功能测试 | `cd "$SPACEMIT_SDK_ROOT" && ./scripts/test/robot-test run application/native/lerobot_app --scope scheduled --category functional` |
-| ACT 性能测试 | `cd "$SPACEMIT_SDK_ROOT" && ./scripts/test/robot-test run application/native/lerobot_app --scope scheduled --category performance` |
-| 发布前性能测试 | `cd "$SPACEMIT_SDK_ROOT" && ./scripts/test/robot-test run application/native/lerobot_app --scope release --category performance` |
-| 直接看性能日志 | `tail -f "$SPACEMIT_SDK_ROOT"/output/test/<scope>/application__native__lerobot_app/modules/application__native__lerobot_app/logs/act_dummy_performance.log` |
+| 列出测试 | `cd "$SROBOTIS_ROOT" && ./scripts/test/robot-test list application/native/lerobot_app` |
+| PR 轻量验证 | `cd "$SROBOTIS_ROOT" && ./scripts/test/robot-test run application/native/lerobot_app --scope pr` |
+| ACT 功能测试 | `cd "$SROBOTIS_ROOT" && ./scripts/test/robot-test run application/native/lerobot_app --scope scheduled --category functional` |
+| ACT 性能测试 | `cd "$SROBOTIS_ROOT" && ./scripts/test/robot-test run application/native/lerobot_app --scope scheduled --category performance` |
+| 发布前性能测试 | `cd "$SROBOTIS_ROOT" && ./scripts/test/robot-test run application/native/lerobot_app --scope release --category performance` |
+| 直接看性能日志 | `tail -f "$SROBOTIS_ROOT"/output/test/<scope>/application__native__lerobot_app/modules/application__native__lerobot_app/logs/act_dummy_performance.log` |

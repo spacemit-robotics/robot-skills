@@ -1,0 +1,24 @@
+{
+  "name": "spacemit-robot-skills",
+  "version": "0.1.0",
+  "description": "Skills for developing SpacemiT Robot SDK with board-local, PC-remote, and hybrid coding-agent workflows.",
+  "displayName": "SpacemiT Robot",
+  "author": {
+    "name": "SpacemiT Robotics",
+    "url": "https://github.com/spacemit-robotics/robot-skills"
+  },
+  "homepage": "https://github.com/spacemit-robotics/robot-skills",
+  "repository": "https://github.com/spacemit-robotics/robot-skills",
+  "license": "Apache-2.0",
+  "keywords": [
+    "spacemit",
+    "robotics",
+    "sdk",
+    "coding-agent",
+    "remote-development",
+    "robot"
+  ],
+  "skills": [
+    "./skills/"
+  ]
+}

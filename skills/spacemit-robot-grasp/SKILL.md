@@ -30,14 +30,14 @@ metadata:
 ## 默认规则
 
 - `build_hint`: `target_preferred`
-- 所有命令都必须在 `$SPACEMIT_SDK_ROOT` 下执行，不要假设当前目录与 SDK 相邻。
+- 所有命令都必须在 `$SROBOTIS_ROOT` 下执行，不要假设当前目录与 SDK 相邻。
 - 默认先跑 dummy functional / performance，用于快速回归；真实夹爪验证只走 `manual` scope。
 - 不默认先读 README；只有命令细节不清、参数语义不清或执行失败时，才回读 `primary_docs`、`CMakeLists.txt` 或 `test/` 源码。
 
 ## 固定流程
 
 1. 先确认 SDK 根可用；无 SDK 就转 bootstrap。
-2. 在 `$SPACEMIT_SDK_ROOT` 下执行 `source build/envsetup.sh`。
+2. 在 `$SROBOTIS_ROOT` 下执行 `source build/envsetup.sh`。
 3. 先确认 `components/control/grasp/test.yaml` 和
   `components/control/grasp/test/` 下脚本存在。
 4. 若只是验证功能，优先跑 `pr` scope 的 dummy functional。
@@ -48,7 +48,7 @@ metadata:
 
 当用户说“测一下 grasp”“跑一下夹爪性能”时，直接按下面顺序执行：
 
-1. `cd "$SPACEMIT_SDK_ROOT" && source build/envsetup.sh`
+1. `cd "$SROBOTIS_ROOT" && source build/envsetup.sh`
 2. `./scripts/test/robot-test list components/control/grasp`
 3. 功能验证：`./scripts/test/robot-test run components/control/grasp --scope pr --category functional`
 4. 性能测试：`./scripts/test/robot-test run components/control/grasp --scope scheduled --category performance`
@@ -67,9 +67,9 @@ metadata:
 
 | 意图 | 动作 |
 | ---- | ---- |
-| 列出测试 | `cd "$SPACEMIT_SDK_ROOT" && ./scripts/test/robot-test list components/control/grasp` |
-| dummy 功能回归 | `cd "$SPACEMIT_SDK_ROOT" && ./scripts/test/robot-test run components/control/grasp --scope pr --category functional` |
-| dummy 性能测试 | `cd "$SPACEMIT_SDK_ROOT" && ./scripts/test/robot-test run components/control/grasp --scope scheduled --category performance` |
-| 发布前性能测试 | `cd "$SPACEMIT_SDK_ROOT" && ./scripts/test/robot-test run components/control/grasp --scope release --category performance` |
-| 手工硬件 smoke | `cd "$SPACEMIT_SDK_ROOT" && ./scripts/test/robot-test run components/control/grasp --scope manual` |
-| 看性能日志 | `tail -f "$SPACEMIT_SDK_ROOT"/output/test/<scope>/components__control__grasp/modules/components__control__grasp/logs/grasp_dummy_performance.log` |
+| 列出测试 | `cd "$SROBOTIS_ROOT" && ./scripts/test/robot-test list components/control/grasp` |
+| dummy 功能回归 | `cd "$SROBOTIS_ROOT" && ./scripts/test/robot-test run components/control/grasp --scope pr --category functional` |
+| dummy 性能测试 | `cd "$SROBOTIS_ROOT" && ./scripts/test/robot-test run components/control/grasp --scope scheduled --category performance` |
+| 发布前性能测试 | `cd "$SROBOTIS_ROOT" && ./scripts/test/robot-test run components/control/grasp --scope release --category performance` |
+| 手工硬件 smoke | `cd "$SROBOTIS_ROOT" && ./scripts/test/robot-test run components/control/grasp --scope manual` |
+| 看性能日志 | `tail -f "$SROBOTIS_ROOT"/output/test/<scope>/components__control__grasp/modules/components__control__grasp/logs/grasp_dummy_performance.log` |

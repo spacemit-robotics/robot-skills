@@ -1,0 +1,38 @@
+{
+  "name": "spacemit-robot-skills",
+  "version": "0.1.0",
+  "description": "Skills for developing SpacemiT Robot SDK with board-local, PC-remote, and hybrid coding-agent workflows.",
+  "author": {
+    "name": "SpacemiT Robotics",
+    "url": "https://github.com/spacemit-robotics/robot-skills"
+  },
+  "homepage": "https://github.com/spacemit-robotics/robot-skills",
+  "repository": "https://github.com/spacemit-robotics/robot-skills",
+  "license": "Apache-2.0",
+  "keywords": [
+    "spacemit",
+    "robotics",
+    "sdk",
+    "coding-agent",
+    "remote-development",
+    "robot"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "SpacemiT Robot",
+    "shortDescription": "Agent workflows for SpacemiT Robot SDK development.",
+    "longDescription": "Develop SpacemiT Robot SDK modules with Codex using board-local, PC-remote, and hybrid edit-sync-build workflows.",
+    "developerName": "SpacemiT Robotics",
+    "category": "Coding",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "brandColor": "#1f7a8c",
+    "defaultPrompt": [
+      "请检查我的 SpacemiT Robot SDK 环境并选择合适的开发模式",
+      "请连接我的开发板并帮我构建一个 robot SDK 模块",
+      "请用 hybrid 模式把本地修改同步到板端后构建验证"
+    ]
+  }
+}

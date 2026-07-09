@@ -30,14 +30,14 @@ metadata:
 ## 默认规则
 
 - `build_hint`: `target_preferred`
-- 所有命令都必须在 `$SPACEMIT_SDK_ROOT` 下执行，不要假设当前目录与 SDK 相邻。
+- 所有命令都必须在 `$SROBOTIS_ROOT` 下执行，不要假设当前目录与 SDK 相邻。
 - 默认先跑 dummy functional / performance；Pinocchio 或真实硬件相关验证不要塞进 `pr`。
 - 不默认先读 README；只有命令细节不清、参数语义不清或执行失败时，才回读 `primary_docs`、`CMakeLists.txt` 或 `test/` 源码。
 
 ## 固定流程
 
 1. 先确认 SDK 根可用；无 SDK 就转 bootstrap。
-2. 在 `$SPACEMIT_SDK_ROOT` 下执行 `source build/envsetup.sh`。
+2. 在 `$SROBOTIS_ROOT` 下执行 `source build/envsetup.sh`。
 3. 先确认 `components/control/manipulator/test.yaml` 和
   `components/control/manipulator/test/` 下脚本存在。
 4. 功能回归优先跑 dummy functional 和 dummy kinematics；不要默认先走 Pinocchio 或硬件链路。
@@ -48,7 +48,7 @@ metadata:
 
 当用户说“测一下 manipulator”“跑一下机械臂性能”时，直接按下面顺序执行：
 
-1. `cd "$SPACEMIT_SDK_ROOT" && source build/envsetup.sh`
+1. `cd "$SROBOTIS_ROOT" && source build/envsetup.sh`
 2. `./scripts/test/robot-test list components/control/manipulator`
 3. 功能验证：`./scripts/test/robot-test run components/control/manipulator --scope pr --category functional`
 4. 性能测试：`./scripts/test/robot-test run components/control/manipulator --scope scheduled --category performance`
@@ -67,9 +67,9 @@ metadata:
 
 | 意图 | 动作 |
 | ---- | ---- |
-| 列出测试 | `cd "$SPACEMIT_SDK_ROOT" && ./scripts/test/robot-test list components/control/manipulator` |
-| dummy 功能回归 | `cd "$SPACEMIT_SDK_ROOT" && ./scripts/test/robot-test run components/control/manipulator --scope pr --category functional` |
-| dummy 性能测试 | `cd "$SPACEMIT_SDK_ROOT" && ./scripts/test/robot-test run components/control/manipulator --scope scheduled --category performance` |
-| 发布前性能测试 | `cd "$SPACEMIT_SDK_ROOT" && ./scripts/test/robot-test run components/control/manipulator --scope release --category performance` |
-| 手工硬件 smoke | `cd "$SPACEMIT_SDK_ROOT" && ./scripts/test/robot-test run components/control/manipulator --scope manual` |
-| 看性能日志 | `tail -f "$SPACEMIT_SDK_ROOT"/output/test/<scope>/components__control__manipulator/modules/components__control__manipulator/logs/manipulator_dummy_performance.log` |
+| 列出测试 | `cd "$SROBOTIS_ROOT" && ./scripts/test/robot-test list components/control/manipulator` |
+| dummy 功能回归 | `cd "$SROBOTIS_ROOT" && ./scripts/test/robot-test run components/control/manipulator --scope pr --category functional` |
+| dummy 性能测试 | `cd "$SROBOTIS_ROOT" && ./scripts/test/robot-test run components/control/manipulator --scope scheduled --category performance` |
+| 发布前性能测试 | `cd "$SROBOTIS_ROOT" && ./scripts/test/robot-test run components/control/manipulator --scope release --category performance` |
+| 手工硬件 smoke | `cd "$SROBOTIS_ROOT" && ./scripts/test/robot-test run components/control/manipulator --scope manual` |
+| 看性能日志 | `tail -f "$SROBOTIS_ROOT"/output/test/<scope>/components__control__manipulator/modules/components__control__manipulator/logs/manipulator_dummy_performance.log` |

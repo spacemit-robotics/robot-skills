@@ -1,78 +1,89 @@
 ---
 name: spacemit-robot-shared
-description: SpacemiT Robot SDK 共享基线：SDK 根路径、读取优先级、构建决策与 skill 路由。
-metadata:
-  requires:
-    bins: ["bash"]
+description: SpacemiT Robot SDK 共享基线；用于选择 local、remote、hybrid 开发模式，解析 SROBOTIS_ROOT、SDK root、target、配置优先级和 skill 路由。
 ---
 
-# SpacemiT 共享规则
+# SpacemiT Robot Shared
 
-## 仓库心智模型（相对 SDK 根）
+## Mode
 
-- 构建入口看 `build/README.md`（`envsetup.sh`、`lunch`、`m`、`mm`）。
-- target 规则看 `target/README.md` 与 `target/*.json`。
-- 组件与应用细节看 `components/`、`middleware/`、`application/` 各子目录 README。
-- `target/*.json` 是板型或产品构建方案，不是用户能力入口。
+先确定开发模式，不确定时根据用户上下文选择最小可行模式：
 
-## 读取优先级
+| Mode | 含义 | 适用场景 |
+| --- | --- | --- |
+| `local` | Board local | agent 直接运行在板子上，SDK 也在板子上 |
+| `remote` | PC remote | agent 在 PC 上，通过 SSH 使用板端 SDK |
+| `hybrid` | PC local edit + board build | PC 有本地 SDK 用于编辑，板端有 SDK 用于构建和运行 |
 
-1. 先读本文件，确认根路径、路由与通用规则。
-2. 再路由到最匹配的专项 skill，先按 skill 正文给出的流程执行。
-3. `primary_docs`、组件 README、头文件属于按需回源资料；只有命令细节不清、参数语义不清、或实际执行失败时再读。
-4. 只有在以下场景才回读额外的总览文档：需要整体目录总览、当前没有命中的专项 skill、或多份文档表述冲突需要回源确认。
-5. 不要每次请求都先读总览文档，也不要把各组件 README 设为固定前置。
+`remote` 和 `hybrid` 的构建、运行、测试都在板端执行。`hybrid` 不交叉编译，不用 PC Docker 构建目标产物，只做 PC 到板端的显式单向同步。
 
-## SDK 根路径
+## Config
 
-- `robot-skills` 与 SDK 目录相互独立；先确定完整 SDK 根，至少包含 `build/`、`components/`、`application/`、`target/`。
-- 若找不到完整 SDK 根目录，则不要直接执行组件命令、`envsetup`、`lunch` 或 `mm`；先走 [`spacemit-robot-sdk-bootstrap`](../spacemit-robot-sdk-bootstrap/SKILL.md)。
-- 文档中的相对路径均相对 SDK 根；执行构建、运行、测试前先在 `$SPACEMIT_SDK_ROOT` 下执行 `source build/envsetup.sh`。
+配置来源优先级如下，前者覆盖后者：
 
-## 总体原则
+1. 用户本次请求中明确给出的 mode、root、host、target、path。
+2. 命令行参数或脚本参数。
+3. 环境变量，如 `SROBOTIS_MODE`、`SROBOTIS_ROOT`、`SROBOTIS_REMOTE`、`SROBOTIS_REMOTE_ROOT`、`SROBOTIS_TARGET`。
+4. 项目配置，例如 SDK 根或仓库根下的 `.srobotis.yaml`、`.srobotis/config.yaml`。
+5. 全局配置，例如 `~/.config/srobotis/config.yaml`。
+6. 自动发现。
+7. 仍不确定时询问用户。
 
-1. 用户面向“能力”，不是面向 target 名。
-2. 先路由到专项 skill，再判断构建方式。
-3. 能 `mm` 就先 `mm`，不默认全量构建。
-4. 只有确实依赖板型、驱动或产品配置时，才执行 `lunch <target>`。
-5. 自动化或 agent 场景下，不依赖裸 `lunch` 的交互默认项。
+`SROBOTIS_ROOT` 是唯一 SDK root 环境变量。不要使用其他 SDK root 变量名作为主路径、兼容路径或命令示例。
 
-## board 与 target
+## SDK Root
 
-- 需要 target 时，先确定 board，再在该 board 对应的候选里显式选择 `lunch <target>`。
-- board 来源优先级：用户或环境已明确给出 > 目标机可读 `/sys/firmware/devicetree/base/compatible`。
-- 从 `compatible` 读取时，先去掉 NUL，再取最具体且能与 target JSON `board` 对齐的值，例如 `spacemit,k3-com260` -> `k3-com260`。
-- 当前 SDK 不会自动从 board 推导 product；若同一 board 下有多个 product 候选且无额外信息，则停止并询问。
-- 不跨平台猜 `k1-*`、`k3-*` target，也不只凭文件名前缀自造 target 名。
+完整 SDK root 至少同时包含：
 
-## build_hint
+- `build/`
+- `components/`
+- `application/`
+- `target/`
 
-- `single_package_first`：先 `source build/envsetup.sh`，进入模块目录优先执行 `mm`；仅在暴露依赖或整机配置缺口时再升级到 target 路径。
-- `target_preferred`：可先尝试 `mm`，但若模块明显依赖板型、驱动或 target 选项，则优先走 `lunch <target>`。
-- `target_required`：先确定 board 和 target，再执行 `lunch <target>`，然后按 README 构建或运行。
+路径语义：
+
+- `local`: `SROBOTIS_ROOT` 指向板端 SDK root。
+- `remote`: `SROBOTIS_REMOTE_ROOT` 指向板端 SDK root；PC 可以没有本地 SDK。
+- `hybrid`: `SROBOTIS_ROOT` 指向 PC 本地 SDK root，`SROBOTIS_REMOTE_ROOT` 指向板端 SDK root。
+
+`hybrid` 模式下，如果用户没有指定 PC 本地 SDK root，默认使用 `~/workspace/spacemit-robot`。
+创建目录、下载 SDK 或执行 repo 初始化前仍必须按 bootstrap 规则向用户确认。
+
+找不到完整 SDK root 时，转到 `spacemit-robot-sdk-bootstrap`。不要在不完整目录里执行 `envsetup.sh`、`lunch`、`m`、`mm` 或组件命令。
+
+## Target
+
+只有需要产品配置、板型驱动或整机镜像上下文时才选择 target。
+
+1. 先识别 board：用户明确给出优先；否则 remote/local 板端可读取 `/sys/firmware/devicetree/base/compatible`。
+2. 再读取 SDK 的 `target/*.json`，按 JSON 内容中的 board/product 信息匹配候选。
+3. 同一 board 只有一个 product 候选时，可显式使用该 target。
+4. 同一 board 有多个 product 候选时，必须询问用户，不自行猜测。
+5. 不写死 host、board、target，不从文件名前缀臆造 target。
+
+## Build Hint
+
+- `single_package_first`: 先 `source build/envsetup.sh`，进入模块目录执行 `mm`；遇到产品配置缺口再升级为 target 构建。
+- `target_preferred`: 可以先尝试 `mm`，但模块明显依赖板型、驱动或产品配置时，先确定 target。
+- `target_required`: 先确定 board 和 target，再执行 `lunch <target>`，然后构建或运行。
 
 默认推导：
 
-- `components/model_zoo/*`：`single_package_first`
-- `components/peripherals/*`：`target_preferred`
-- `middleware/ros2/*`：`target_preferred`
-- `application/native/*`：`target_required`
-- `application/ros2/*`：`target_required`
+- `components/model_zoo/*`: `single_package_first`
+- `components/multimedia/*`: `single_package_first`
+- `components/control/*`: `target_preferred`
+- `application/native/*`: `target_required`
+- `application/ros2/*`: `target_required`
 
-若专项 skill 已显式声明 `metadata.sdk.build_hint`，以专项 skill 为准。
+专项 skill 的 `metadata.sdk.build_hint` 优先于默认推导。
 
-## 通用决策流
+## Routing
 
-1. 先确认 SDK 根是否完整；不完整就走 bootstrap。
-2. 再执行 `source build/envsetup.sh`。
-3. 再路由到最匹配的专项 skill，并先按 skill 正文流程执行。
-4. 再按专项 skill 的 `build_hint`，或 shared 默认规则，决定先 `mm` 还是先 `lunch <target>`。
-5. 若需要 target，先确定 board；同一 board 下若有多个 product 候选，先询问用户。
-6. 若命令细节、参数或接口语义仍不明确，再回读该 skill 的 `primary_docs`、组件 README 或头文件。
-7. 再检查运行前置，如模型、设备、服务、环境变量、端口、权限与输出目录。
-8. 对“帮我执行 / 帮我测一下 / 跑性能数据”这类请求，必须真正执行并返回结果、条件与失败点。
+- 首次拉取或初始化 SDK：`spacemit-robot-sdk-bootstrap`
+- 软件包安装、ROS2 依赖、SpacemiT 运行包、Python/pip/uv 源配置：`spacemit-robot-software-setup`
+- SSH 与远程命令：`spacemit-robot-remote`
+- 构建决策：`spacemit-robot-build`
+- Hybrid 同步：`spacemit-robot-sync`
+- 模块开发：路由到对应组件或应用 skill
 
-## 路由
-
-- 首次拉 SDK 与环境：[`spacemit-robot-sdk-bootstrap`](../spacemit-robot-sdk-bootstrap/SKILL.md)
-- 专项组件或应用（例 LLM）：[`spacemit-robot-llm`](../spacemit-robot-llm/SKILL.md)
+执行型请求需要真实执行命令并返回命令、结果、关键日志和失败点。日常开发验证不默认调用 `scripts/test/robot-test`；它只用于 CI、回归验证或用户明确要求的场景。
