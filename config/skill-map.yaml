@@ -69,6 +69,13 @@ skills:
       - components/multimedia/audio_process/doa/README.md
       - components/multimedia/audio_process/doa/package.xml
       - components/multimedia/audio_process/doa/test.yaml
+  - name: spacemit-robot-vision
+    category: components
+    primary_docs:
+      - components/model_zoo/vision/README.md
+      - components/model_zoo/vision/include/vision_service.h
+      - components/model_zoo/vision/package.xml
+      - components/model_zoo/vision/test.yaml
   - name: spacemit-robot-grasp
     category: components
     primary_docs:

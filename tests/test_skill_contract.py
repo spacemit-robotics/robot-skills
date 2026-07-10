@@ -32,6 +32,7 @@ COMPONENT_SKILLS = {
         "components/model_zoo/voiceprint",
         "components/multimedia/audio_process/doa",
     ),
+    "spacemit-robot-vision": ("components/model_zoo/vision",),
     "spacemit-robot-llm": ("components/model_zoo/llm",),
     "spacemit-robot-lerobot-onnx-inference": ("components/thirdparty/lerobot/examples/onnx_inference",),
     "spacemit-robot-grasp": ("components/control/grasp",),

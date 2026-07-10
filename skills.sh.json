@@ -13,6 +13,7 @@
         "spacemit-robot-build",
         "spacemit-robot-sync",
         "spacemit-robot-speech",
+        "spacemit-robot-vision",
         "spacemit-robot-llm",
         "spacemit-robot-lerobot-onnx-inference",
         "spacemit-robot-grasp",
