@@ -69,6 +69,79 @@ skills:
       - components/multimedia/audio_process/doa/README.md
       - components/multimedia/audio_process/doa/package.xml
       - components/multimedia/audio_process/doa/test.yaml
+  - name: spacemit-robot-peripherals
+    category: components
+    primary_docs:
+      - components/peripherals/5g/README.md
+      - components/peripherals/5g/include/5g.h
+      - components/peripherals/5g/package.xml
+      - components/peripherals/5g/test.yaml
+      - middleware/ros2/peripherals/5g/README.md
+      - middleware/ros2/peripherals/5g/package.xml
+      - middleware/ros2/peripherals/5g/test.yaml
+      - components/peripherals/imu/README.md
+      - components/peripherals/imu/include/imu.h
+      - components/peripherals/imu/package.xml
+      - components/peripherals/imu/test.yaml
+      - middleware/ros2/peripherals/imu/README.md
+      - middleware/ros2/peripherals/imu/package.xml
+      - middleware/ros2/peripherals/imu/test.yaml
+      - components/peripherals/key/README.md
+      - components/peripherals/key/include/key.h
+      - components/peripherals/key/package.xml
+      - components/peripherals/key/test.yaml
+      - middleware/ros2/peripherals/key/README.md
+      - middleware/ros2/peripherals/key/package.xml
+      - middleware/ros2/peripherals/key/test.yaml
+      - components/peripherals/led/README.md
+      - components/peripherals/led/include/led.h
+      - components/peripherals/led/package.xml
+      - components/peripherals/led/test.yaml
+      - middleware/ros2/peripherals/led/README.md
+      - middleware/ros2/peripherals/led/package.xml
+      - middleware/ros2/peripherals/led/test.yaml
+      - components/peripherals/lidar/README.md
+      - components/peripherals/lidar/include/lidar.h
+      - components/peripherals/lidar/package.xml
+      - components/peripherals/lidar/test.yaml
+      - middleware/ros2/peripherals/lidar/README.md
+      - middleware/ros2/peripherals/lidar/package.xml
+      - middleware/ros2/peripherals/lidar/test.yaml
+      - components/peripherals/light_sensor/README.md
+      - components/peripherals/light_sensor/include/light_sensor.h
+      - components/peripherals/light_sensor/package.xml
+      - components/peripherals/light_sensor/test.yaml
+      - middleware/ros2/peripherals/light_sensor/README.md
+      - middleware/ros2/peripherals/light_sensor/package.xml
+      - middleware/ros2/peripherals/light_sensor/test.yaml
+      - components/peripherals/misc_io/README.md
+      - components/peripherals/misc_io/include/misc_io.h
+      - components/peripherals/misc_io/package.xml
+      - components/peripherals/misc_io/test.yaml
+      - middleware/ros2/peripherals/misc_io/README.md
+      - middleware/ros2/peripherals/misc_io/package.xml
+      - middleware/ros2/peripherals/misc_io/test.yaml
+      - components/peripherals/nfc/README.md
+      - components/peripherals/nfc/include/nfc.h
+      - components/peripherals/nfc/package.xml
+      - components/peripherals/nfc/test.yaml
+      - middleware/ros2/peripherals/nfc/README.md
+      - middleware/ros2/peripherals/nfc/package.xml
+      - middleware/ros2/peripherals/nfc/test.yaml
+      - components/peripherals/pm/README.md
+      - components/peripherals/pm/include/pm.h
+      - components/peripherals/pm/package.xml
+      - components/peripherals/pm/test.yaml
+      - middleware/ros2/peripherals/pm/README.md
+      - middleware/ros2/peripherals/pm/package.xml
+      - middleware/ros2/peripherals/pm/test.yaml
+      - components/peripherals/wifi/README.md
+      - components/peripherals/wifi/include/wifi.h
+      - components/peripherals/wifi/package.xml
+      - components/peripherals/wifi/test.yaml
+      - middleware/ros2/peripherals/wifi/README.md
+      - middleware/ros2/peripherals/wifi/package.xml
+      - middleware/ros2/peripherals/wifi/test.yaml
   - name: spacemit-robot-vision
     category: components
     primary_docs:
