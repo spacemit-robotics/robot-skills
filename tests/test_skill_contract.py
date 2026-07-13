@@ -23,6 +23,28 @@ BASE_SKILLS = {
     "spacemit-robot-sync",
 }
 
+PERIPHERAL_NAMES = (
+    "5g",
+    "imu",
+    "key",
+    "led",
+    "lidar",
+    "light_sensor",
+    "misc_io",
+    "nfc",
+    "pm",
+    "wifi",
+)
+
+PERIPHERAL_MODULE_PATHS = tuple(
+    path
+    for name in PERIPHERAL_NAMES
+    for path in (
+        f"components/peripherals/{name}",
+        f"middleware/ros2/peripherals/{name}",
+    )
+)
+
 COMPONENT_SKILLS = {
     "spacemit-robot-speech": (
         "components/multimedia/audio",
@@ -38,6 +60,7 @@ COMPONENT_SKILLS = {
     "spacemit-robot-grasp": ("components/control/grasp",),
     "spacemit-robot-manipulator": ("components/control/manipulator",),
     "spacemit-robot-lerobot-app": ("application/native/lerobot_app",),
+    "spacemit-robot-peripherals": PERIPHERAL_MODULE_PATHS,
 }
 
 BASE_REFERENCES = (
@@ -188,6 +211,70 @@ def assert_component_contracts() -> None:
                 fail(f"{name}: metadata.sdk.module_paths must include {module_path}")
         if not sdk_meta.get("build_hint"):
             fail(f"{name}: metadata.sdk.build_hint is required")
+
+
+def assert_peripherals_skill_contract() -> None:
+    name = "spacemit-robot-peripherals"
+    skill_path = SKILLS_ROOT / name / "SKILL.md"
+    if not skill_path.exists():
+        fail(f"{name}: SKILL.md is missing")
+
+    meta, body = parse_frontmatter(skill_path)
+    description = meta.get("description") or ""
+    for trigger in (
+        "MR880A",
+        "CMP10A",
+        "MXC4005",
+        "ICM42670P",
+        "WS2812",
+        "YDLIDAR",
+        "RPLIDAR",
+        "W1160",
+        "SI512",
+        "NetworkManager",
+    ):
+        if trigger not in description:
+            fail(f"{name}: description must cover hardware trigger {trigger}")
+
+    sdk_meta = (meta.get("metadata") or {}).get("sdk") or {}
+    module_paths = sdk_meta.get("module_paths") or []
+    if tuple(module_paths) != PERIPHERAL_MODULE_PATHS:
+        fail(f"{name}: module_paths must list the current native/ROS 2 pairs in routing order")
+
+    required_body_tokens = (
+        "spacemit-robot-shared",
+        "spacemit-robot-build",
+        "spacemit-robot-remote",
+        "spacemit-robot-sync",
+        "references/device-routing.md",
+        "references/native-development.md",
+        "references/ros2-development.md",
+        "references/testing.md",
+        "references/troubleshooting.md",
+        "test.yaml",
+        "robot-test",
+        "exit status",
+        "hardware smoke",
+        "NFC",
+        "WiFi",
+        "5G",
+        "PM",
+    )
+    for token in required_body_tokens:
+        if token not in body:
+            fail(f"{name}: SKILL.md must document {token}")
+
+    entry = skill_map_entries().get(name) or {}
+    docs = entry.get("primary_docs") or []
+    for peripheral in PERIPHERAL_NAMES:
+        for expected in (
+            f"components/peripherals/{peripheral}/README.md",
+            f"components/peripherals/{peripheral}/test.yaml",
+            f"middleware/ros2/peripherals/{peripheral}/README.md",
+            f"middleware/ros2/peripherals/{peripheral}/test.yaml",
+        ):
+            if expected not in docs:
+                fail(f"{name}: skill-map primary_docs must include {expected}")
 
 
 def assert_skill_reference_links() -> None:
@@ -399,6 +486,7 @@ def main() -> int:
     checks = (
         assert_frontmatter_and_map,
         assert_component_contracts,
+        assert_peripherals_skill_contract,
         assert_skill_reference_links,
         assert_sdk_root_variable_rules,
         assert_module_skill_template_rules,
